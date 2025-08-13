@@ -1,0 +1,12 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: *
+Disallow: /videos/
+Disallow: /images/
+Disallow: /private/
+
+Sitemap: https://www.noblecutgems.com/sitemap.xml
