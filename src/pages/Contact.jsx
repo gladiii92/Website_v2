@@ -238,11 +238,11 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 -mt-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-2">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <Card className="border-none shadow-2xl">
+              
                 <CardHeader className="p-8 pl-0">
                   <CardTitle className="serif-heading text-2xl font-bold text-gray-900 text-left">
                     {t.contact_form_title}
@@ -304,16 +304,17 @@ export default function ContactPage() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <div>
-                            <Label htmlFor="inquiry_type" className="text-sm font-medium text-gray-700 mb-2 block">
-                              {t.inquiry_type} *
-                            </Label>
+                          <Label htmlFor="inquiry_type" className="text-sm font-medium text-gray-700 block">
+                            {t.inquiry_type} *
+                          </Label>
+
+                          <div className="border border-gray-900 rounded-md inline-block">
                             <Select
                               value={formData.inquiry_type}
                               onValueChange={(value) => handleInputChange('inquiry_type', value)}
                               required
                             >
-                              <SelectTrigger className="mt-1 border border-gray-300 rounded-md">
+                              <SelectTrigger className="w-auto h-10 flex items-center px-3 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
                                 <SelectValue placeholder={t.inquiry_type} />
                               </SelectTrigger>
                               <SelectContent>
@@ -327,26 +328,32 @@ export default function ContactPage() {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="budget_range" className="text-sm font-medium text-gray-700 mb-2 block">
+                      <div className="space-y-4">
+                        <Label
+                          htmlFor="budget_range"
+                          className="text-sm font-medium text-gray-700 block"
+                        >
                           {t.budget_range}
                         </Label>
-                        <Select
-                          value={formData.budget_range}
-                          onValueChange={(value) => handleInputChange('budget_range', value)}
-                        >
-                          <SelectTrigger className="mt-1 border border-gray-300 rounded-md">
-                            <SelectValue placeholder={t.budget_range} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="under_5k">{t.budget_under_5k}</SelectItem>
-                            <SelectItem value="5k_15k">{t.budget_5k_15k}</SelectItem>
-                            <SelectItem value="15k_50k">{t.budget_15k_50k}</SelectItem>
-                            <SelectItem value="50k_100k">{t.budget_50k_100k}</SelectItem>
-                            <SelectItem value="above_100k">{t.budget_above_100k}</SelectItem>
-                            <SelectItem value="prefer_not_to_say">{t.budget_prefer_not_to_say}</SelectItem>
-                          </SelectContent>
-                        </Select>
+
+                        <div className="border border-gray-900 rounded-md w-[250px] inline-block">
+                          <Select
+                            value={formData.budget_range}
+                            onValueChange={(value) => handleInputChange('budget_range', value)}
+                          >
+                            <SelectTrigger className="w-full h-10 flex items-center px-3 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                              <SelectValue placeholder={t.budget_range} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="under_5k">{t.budget_under_5k}</SelectItem>
+                              <SelectItem value="5k_15k">{t.budget_5k_15k}</SelectItem>
+                              <SelectItem value="15k_50k">{t.budget_15k_50k}</SelectItem>
+                              <SelectItem value="50k_100k">{t.budget_50k_100k}</SelectItem>
+                              <SelectItem value="above_100k">{t.budget_above_100k}</SelectItem>
+                              <SelectItem value="prefer_not_to_say">{t.budget_prefer_not_to_say}</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
 
                       <div>
@@ -384,13 +391,13 @@ export default function ContactPage() {
                     </form>
                   )}
                 </CardContent>
-              </Card>
+              
             </div>
 
             {/* Contact Information */}
-            <div className="space-y-8">
-              <Card className="border-none shadow-xl">
-                <CardHeader className="p-6">
+            <div className="space-y-6">
+              
+                <CardHeader className="p-3">
                   <CardTitle className="serif-heading text-xl font-bold text-gray-900">
                     {t.contact_info}
                   </CardTitle>
@@ -435,35 +442,35 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-0">{t.email_title}</h3>
-                      <p className="text-gray-600 mt-0">noblecutgems_official@gmx.de</p>
+                      <p className="text-gray-600 mt-5 mb-8">noblecutgems_official@gmx.de</p>
                     </div>
                   </a>
                 </CardContent>
-              </Card>
+              
 
-              <Card className="border-none shadow-xl">
-                <CardHeader className="p-6">
+              
+                <CardHeader className="p-5 ">
                   <CardTitle className="serif-heading text-xl font-bold text-gray-900 flex items-center gap-2 justify-start">
                     <Clock className="w-5 h-5" style={{color: 'var(--primary-color)'}} />
                     {t.opening_hours}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 pt-0 space-y-3">
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <div className="flex justify-between items-center py-2 border-b border-gray-200">
                     <span className="text-gray-600">{t.monday_friday}</span>
                   </div>
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <div className="flex justify-between items-center py-2 border-b border-gray-200">
                     <span className="text-gray-600">{t.saturday}</span>
                   </div>
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-gray-600">{t.sunday}</span>
+                    <span className="text-gray-600 mb-6">{t.sunday}</span>
                   </div>
                 </CardContent>
-              </Card>
+              
 
-              <Card className="border-none shadow-xl bg-gradient-to-br from-blue-50 to-blue-25">
+              
                 <CardContent className="p-6">
-                  <h3 className="serif-heading text-lg font-bold text-gray-900 mb-3">
+                  <h3 className="serif-heading text-lg font-bold text-gray-900 mb-1 text-center mb-2">
                     {t.consultation_short}
                   </h3>
                   <Button 
@@ -475,7 +482,7 @@ export default function ContactPage() {
                     {t.consultation_button}
                   </Button>
                 </CardContent>
-              </Card>
+              
             </div>
           </div>
         </div>

@@ -112,7 +112,11 @@ const translations = {
       10: "Gelber Mali Granat",
       11: "Orangener Mali Granat",
       12: "Gelber Mali Granat",
-      13: "Gelblich-Grüner Granat"
+      13: "Gelblich-Grüner Mali Granat",
+      14: "Gelblich-Brauner Mali Granat",
+      15: "Roter Rubin",
+      16: "Lila-Roter Rubin",
+      17: "Roter Rubin"
     },
     // Neu: Übersetzte Rarity-Levels (mit 4 Kategorien)
     rarity_levels: {
@@ -209,7 +213,11 @@ const translations = {
       10: "Yellow Mali Garnet",
       11: "Orange Mali Garnet",
       12: "Yellow Mali Garnet",
-      13: "Yellowish-Green Garnet"
+      13: "Yellowish-Green Mali Garnet",
+      14: "Yellowish-Brown Mali Garnet",
+      15: "Red Ruby",
+      16: "Pinkish-Red Ruby",
+      17: "Red Ruby"
     },
     rarity_levels: {
       exceptional: "Exceptional",
@@ -304,7 +312,11 @@ const translations = {
       10: "Grenat Jaune du Mali",
       11: "Grenat Orange du Mali",
       12: "Grenat Jaune du Mali",
-      13: "Grenat Vert-Jaunâtre"
+      13: "Grenat Vert-Jaunâtre du Mali",
+      14: "Grenat Brun-Jaunâtre du Mali",
+      15: "Rubis Rouge",
+      16: "Rubis Rouge-Pourpre",
+      17: "Rubis Rouge"
 
     },
 

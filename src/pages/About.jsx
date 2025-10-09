@@ -213,10 +213,10 @@ export default function AboutPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300" style={{backgroundColor: 'var(--primary-color)', opacity: 0.2}}>
                     <Crown className="w-8 h-8" style={{color: 'var(--primary-color)'}} />
                   </div>
-                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-left">
+                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-center">
                     {t.expertise_title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed mb-4 text-center md:text-left">
+                  <p className="text-gray-600 leading-relaxed mb-4 text-center md:text-center">
                     {t.expertise_desc}
                   </p>
                 </CardContent>
@@ -227,10 +227,10 @@ export default function AboutPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300" style={{backgroundColor: 'var(--success)', opacity: 0.2}}>
                     <Globe className="w-8 h-8" style={{color: 'var(--success)'}} />
                   </div>
-                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-left">
+                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-center">
                     {t.global_title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed text-center md:text-left">
+                  <p className="text-gray-600 leading-relaxed text-center md:text-center">
                     {t.global_desc}
                   </p>
                 </CardContent>
@@ -241,10 +241,10 @@ export default function AboutPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300" style={{backgroundColor: 'var(--cta-color)', opacity: 0.2}}>
                     <Sparkles className="w-8 h-8" style={{color: 'var(--cta-color)'}} />
                   </div>
-                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-left">
+                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-center">
                     {t.craftsmanship_title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed text-center md:text-left">
+                  <p className="text-gray-600 leading-relaxed text-center md:text-center">
                     {t.craftsmanship_desc}
                   </p>
                 </CardContent>
@@ -255,10 +255,10 @@ export default function AboutPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300" style={{backgroundColor: 'var(--success)', opacity: 0.2}}>
                     <Award className="w-8 h-8" style={{color: 'var(--success)'}} />
                   </div>
-                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-left">
+                  <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4 text-center md:text-center">
                     {t.trust_title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed text-center md:text-left">
+                  <p className="text-gray-600 leading-relaxed text-center md:text-center">
                     {t.trust_desc}
                   </p>
                 </CardContent>

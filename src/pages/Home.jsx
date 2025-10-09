@@ -37,7 +37,13 @@ const translations = {
       8: "Electric-Blauer Saphir",
       9: "Orange-Gelber Mali Granat",
       10: "Gelber Mali Granat",
-      11: "Orangener Mali Granat"
+      11: "Orangener Mali Granat",
+      12: "Gelber Mali Granat",
+      13: "Gelblich-Grüner Mali Granat",
+      14: "Gelblich-Brauner Mali Granat",
+      15: "Roter Rubin",
+      16: "Lila-Roter Rubin",
+      17: "Roter Rubin"
     },
     cuts: {
       oval: "Oval",
@@ -99,9 +105,15 @@ const translations = {
       6: "Reddish-Pink Spinel",
       7: "Kashmir Sapphire",
       8: "Electric-Blue Sapphire",
-      9: "Orange Mali Garnet",
+      9: "Orange-Yellow Mali Garnet",
       10: "Yellow Mali Garnet",
-      11: "Orange Mali Garnet"
+      11: "Orange Mali Garnet",
+      12: "Yellow Mali Garnet",
+      13: "Yellowish-Green Mali Garnet",
+      14: "Yellowish-Brown Mali Garnet",
+      15: "Red Ruby",
+      16: "Pinkish-Red Ruby",
+      17: "Red Ruby"
     },
     cuts: {
       oval: "Oval",
@@ -163,9 +175,15 @@ const translations = {
       6: "Spinelle Rouge-Rose",
       7: "Saphir du Cachemire",
       8: "Saphir Bleu-Electrique",
-      9: "Grenat Orange du Mali",
+      9: "Grenat Orange-Jaune du Mali",
       10: "Grenat Jaune du Mali",
-      11: "Grenat Orange du Mali"
+      11: "Grenat Orange du Mali",
+      12: "Grenat Jaune du Mali",
+      13: "Grenat Vert-Jaunâtre du Mali",
+      14: "Grenat Brun-Jaunâtre du Mali",
+      15: "Rubis Rouge",
+      16: "Rubis Rouge-Pourpre",
+      17: "Rubis Rouge"
     },
     cuts: {
       oval: "Ovale",
@@ -209,8 +227,20 @@ export default function HomePage() {
   const [featuredStones, setFeaturedStones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const shuffledFeaturedStones = useMemo(() => {
+    return shuffleArray(featuredStones).slice(0, 6);
+  }, [featuredStones]);
 
   const t = translations[language];
+
+  function shuffleArray(array) {
+    const newArr = [...array]; // Kopie, um Original nicht zu verändern
+    for (let i = newArr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+    }
+    return newArr;
+  }
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -241,9 +271,7 @@ export default function HomePage() {
     setLoading(true);
     try {
       // nur die Steine nehmen, die als "featured" markiert und nicht verkauft sind
-      const stones = gemstones
-        .filter(s => s.is_featured && !s.is_sold)
-        .slice(0, 6); // maximal 6 Stück
+      const stones = gemstones.filter(s => s.is_featured && !s.is_sold);
       setFeaturedStones(stones);
     } catch (error) {
       console.error('Error loading featured stones:', error);
@@ -413,8 +441,8 @@ export default function HomePage() {
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {featuredStonesMemo.map((stone) => (
-                  <Link key={stone.id} to={`/stone/${stone.slug}`}> {/* Geändert: Slug statt ?id= */}
+                {shuffledFeaturedStones.map((stone) => (
+                  <Link key={stone.id} to={`/stone/${stone.slug}`}>
                     <StoneCard stone={stone} />
                   </Link>
                 ))}

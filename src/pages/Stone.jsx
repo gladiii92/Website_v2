@@ -113,7 +113,11 @@ const translations = {
       10: "Gelber Mali Granat",
       11: "Orangener Mali Granat",
       12: "Gelber Mali Granat",
-      13: "Gelblich-Grüner Granat"
+      13: "Gelblich-Grüner Mali Granat",
+      14: "Gelblich-Brauner Mali Granat",
+      15: "Roter Rubin",
+      16: "Lila-Roter Rubin",
+      17: "Roter Rubin"
     },
     colors: {
       gelb: "Gelb",
@@ -126,7 +130,8 @@ const translations = {
       violett: "Violett",
       blaugruen: "Bläulich-Grün",
       gelborange: "Gelb-Orange",
-      orangegelb: "Orange-Gelb"
+      orangegelb: "Orange-Gelb",
+      pinkishred: "Lila-Rot"
     },
     certifications: {
       aig: "AIG-Zertifikat",
@@ -252,7 +257,8 @@ const translations = {
       violett: "Violet",
       blaugruen: "Blueish-Green",
       yelloworange: "Yellowih-Orange",
-      orangeyellow: "Orange-Yellow"
+      orangeyellow: "Orange-Yellow",
+      pinkishred: "Pinkish-Red"
     },
     stone_names: {
       1: "Yellow Sapphire",
@@ -267,7 +273,11 @@ const translations = {
       10: "Yellow Mali Garnet",
       11: "Orange Mali Garnet",
       12: "Yellow Mali Garnet",
-      13: "Yellowish-Green Garnet"
+      13: "Yellowish-Green Mali Garnet",
+      14: "Yellowish-Brown Mali Garnet",
+      15: "Red Ruby",
+      16: "Pinkish-Red Ruby",
+      17: "Red Ruby"
     },
     certifications: {
       aig: "AIG Certificate",
@@ -390,7 +400,8 @@ const translations = {
       violett: "Violet",
       blaugruen: "Bleu-Vert",
       orangegelb: "Orange-Jaune",
-      gelborange: "Jaune-Orangé"
+      gelborange: "Jaune-Orangé",
+      pinkishred: "Rouge-Pourpre"
 
     },
     stone_names: {
@@ -406,7 +417,11 @@ const translations = {
       10: "Grenat Jaune du Mali",
       11: "Grenat Orange du Mali",
       12: "Grenat Jaune du Mali",
-      13: "Grenat Vert-Jaunâtre"
+      13: "Grenat Vert-Jaunâtre du Mali",
+      14: "Grenat Brun-Jaunâtre du Mali",
+      15: "Rubis Rouge",
+      16: "Rubis Rouge-Pourpre",
+      17: "Rubis Rouge"
     },
     certifications: {
       aig: "Certificat AIG",
@@ -840,13 +855,13 @@ export default function StonePage() {
                 <div dangerouslySetInnerHTML={{ __html: stone[`description_${language}`] || stone.description_de }} className="text-gray-700 leading-relaxed mb-8" />
 
                 {/* Specifications – direkt unter Beschreibung */}
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5" style={{color: 'var(--cta-color)'}} />
+                <Card className="mb-20">
+                  <CardContent className="p-6 ">
+                    <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-2 flex items-center p-2">
+                      <Sparkles className="w-8 h-5" style={{color: 'var(--cta-color)'}} />
                       {t.specifications}
                     </h3>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-2 gap-4 text-sm p-4 space-y-2">
                       {stone.carat_weight && (
                         <div className="border-b border-gray-100 pb-3">
                           <dt className="font-medium text-gray-600 mb-1">{t.carat_weight}</dt>
@@ -920,7 +935,7 @@ export default function StonePage() {
                         <p className="text-gray-600">{t.inquiry_success}</p>
                       </div>
                     ) : (
-                      <form onSubmit={handleInquirySubmit} className="space-y-4 mt-12">
+                      <form onSubmit={handleInquirySubmit} className="space-y-4 mt-1">
                         <div>
                           <Label htmlFor="full_name">{t.full_name}</Label>
                           <Input
