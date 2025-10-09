@@ -1,0 +1,8 @@
+<script type="text/javascript">
+  // spa-github-pages Skript (https://github.com/rafgraph/spa-github-pages)
+  // Redirects 404 to index.html with path as query param
+  var path = window.location.pathname.replace(/^\//, '');
+  if (path) {
+    window.location.replace(window.location.origin + '/?path=' + encodeURIComponent(path) + window.location.hash);
+  }
+</script>

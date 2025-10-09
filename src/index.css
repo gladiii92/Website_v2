@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply m-0 p-0 box-border;
+  }
+}
+
+/* Globale responsive Container-Beispiele */
+.container {
+  @apply flex flex-wrap justify-center;
+}
+
+/* Beispiel für Stein-Karten (passe an deine Klassen an) */
+.stone-card {
+  @apply w-full max-w-xs m-2; /* Vollbreite auf Mobile, max 300px auf Desktop */
+}
+
+.hero-bg {
+  background-attachment: fixed;  /* Standard */
+}
+
+/* In deiner CSS-Datei (z. B. index.css) */
+.media-container {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Sanfter Übergang */
+}
+
+.media-container.loading { /* Optional: Für Ladezustand */
+  opacity: 0;
+}
+
+
+/* Media Queries für Feinabstimmung (Tailwind verwendet sm/md/lg stattdessen) */
+@media (max-width: 640px) { /* Mobile */
+  .stone-card {
+    @apply text-sm; /* Kleinere Schrift */
+  }
+  .thumbnail {
+    @apply w-full h-auto;
+  }
+}
+
+@media (min-width: 768px) { /* Tablet/Desktop */
+  .stone-card {
+    @apply w-1/3; /* 3 Spalten */
+  }
+  
+  .hero-bg {
+    background-attachment: scroll;
+  }
+
+  .group-hover\:scale-110 {
+    transition-duration: 300ms;  /* Kürzer als 700ms */
+  }
+
+}
+
