@@ -80,6 +80,7 @@ const translations = {
       radiant: "Radiant",
       trilliant: "Trilliant",
       heart: "Herz",
+      fancy: "Unikat"
     },
     origins: {
       ceylon: "Ceylon",
@@ -117,7 +118,12 @@ const translations = {
       14: "Gelblich-Brauner Mali Granat",
       15: "Roter Rubin",
       16: "Lila-Roter Rubin",
-      17: "Roter Rubin"
+      17: "Roter Rubin",
+      18: "Lebendig-Grüner Peridot",
+      19: "Dunkel-Blau-Grüner Saphir",
+      20: "Hellgrüner Smaragd",
+      21: "Champagner Topaz",
+      22: "Bi-Color Tourmalin"
     },
     colors: {
       gelb: "Gelb",
@@ -131,7 +137,11 @@ const translations = {
       blaugruen: "Bläulich-Grün",
       gelborange: "Gelb-Orange",
       orangegelb: "Orange-Gelb",
-      pinkishred: "Lila-Rot"
+      pinkishred: "Lila-Rot",
+      darkteal: "Dunkel-Blau-Grün",
+      lightgreen: "Hell-Grün",
+      champagner: "Champagner",
+      bicolor: "Bi-Color"
     },
     certifications: {
       aig: "AIG-Zertifikat",
@@ -218,14 +228,15 @@ const translations = {
       cushion: "Cushion",
       brilliant: "Brilliant",
       round: "Round",
-      emerald: "Emerald Cut",
-      princess: "Princess Cut",
+      emerald: "Emerald-Cut",
+      princess: "Princess-Cut",
       marquise: "Marquise",
       pear: "Pear",
       asscher: "Asscher",
       radiant: "Radiant",
       trilliant: "Trilliant",
       heart: "Heart",
+      fancy: "Fancy"
     },
     origins: {
       ceylon: "Ceylon",
@@ -258,7 +269,11 @@ const translations = {
       blaugruen: "Blueish-Green",
       yelloworange: "Yellowih-Orange",
       orangeyellow: "Orange-Yellow",
-      pinkishred: "Pinkish-Red"
+      pinkishred: "Pinkish-Red",
+      darkteal: "Dark-Teal",
+      lightgreen: "Light-Green",
+      champagner: "Champagne",
+      bicolor: "Bi-Color"
     },
     stone_names: {
       1: "Yellow Sapphire",
@@ -277,7 +292,13 @@ const translations = {
       14: "Yellowish-Brown Mali Garnet",
       15: "Red Ruby",
       16: "Pinkish-Red Ruby",
-      17: "Red Ruby"
+      17: "Red Ruby",
+      18: "Vivid-Green Peridot",
+      19: "Dark-Teal Sapphire",
+      20: "Light-Green Emerald",
+      21: "Champagne Topaz",
+      22: "Bi-Color Tourmaline"
+
     },
     certifications: {
       aig: "AIG Certificate",
@@ -370,6 +391,7 @@ const translations = {
       radiant: "Radiant",
       trilliant: "Trilliant",
       heart: "Cœur",
+      fancy: "Fantaisie"
     },
     origins: {
       ceylon: "Ceylan",
@@ -398,16 +420,20 @@ const translations = {
       lila: "Violet",
       reddishpink: "Rouge-Rose",
       violett: "Violet",
-      blaugruen: "Bleu-Vert",
+      blaugruen: "Sarcelle",
       orangegelb: "Orange-Jaune",
       gelborange: "Jaune-Orangé",
-      pinkishred: "Rouge-Pourpre"
+      pinkishred: "Rouge-Pourpre",
+      darkteal: "Sarcelle-Foncée",
+      lightgreen: "Vert-Clair",
+      champagner: "Champagneur",
+      bicolor: "Bi-Color"
 
     },
     stone_names: {
       1: "Saphir Jaune",
       2: "Spinelle Bleu",
-      3: "Saphir Bleu-Vert",
+      3: "Saphir Sarcelle",
       4: "Spinelle Lavande",
       5: "Péridot Vert",
       6: "Spinelle Rouge-Rose",
@@ -421,7 +447,13 @@ const translations = {
       14: "Grenat Brun-Jaunâtre du Mali",
       15: "Rubis Rouge",
       16: "Rubis Rouge-Pourpre",
-      17: "Rubis Rouge"
+      17: "Rubis Rouge",
+      18: "Péridot Vert-Vif",
+      19: "Saphir Bleu-Sarcelle-Foncé",
+      20: "Émeraude Vert-Clair",
+      21: "Topaze Champagne",
+      22: "Tourmaline Bicolore"
+
     },
     certifications: {
       aig: "Certificat AIG",

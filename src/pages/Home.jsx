@@ -43,7 +43,10 @@ const translations = {
       14: "Gelblich-Brauner Mali Granat",
       15: "Roter Rubin",
       16: "Lila-Roter Rubin",
-      17: "Roter Rubin"
+      17: "Roter Rubin",
+      18: "Lebendig-Grüner Peridot",
+      19: "Dunkel-Blau-Grüner Saphir",
+      20: "Hellgrüner Smaragd"
     },
     cuts: {
       oval: "Oval",
@@ -113,7 +116,10 @@ const translations = {
       14: "Yellowish-Brown Mali Garnet",
       15: "Red Ruby",
       16: "Pinkish-Red Ruby",
-      17: "Red Ruby"
+      17: "Red Ruby",
+      18: "Vivid-Green Peridot",
+      19: "Dark-Teal Sapphire",
+      20: "Light-Green Emerald"
     },
     cuts: {
       oval: "Oval",
@@ -183,7 +189,10 @@ const translations = {
       14: "Grenat Brun-Jaunâtre du Mali",
       15: "Rubis Rouge",
       16: "Rubis Rouge-Pourpre",
-      17: "Rubis Rouge"
+      17: "Rubis Rouge",
+      18: "Péridot Vert-Vif",
+      19: "Saphir Bleu-Sarcelle-Foncé",
+      20: "Émeraude Vert-Clair"
     },
     cuts: {
       oval: "Ovale",

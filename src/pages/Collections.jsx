@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
@@ -22,6 +22,32 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+}
+
+function StoneDetails({ stone, getTranslatedCut, getTranslatedOrigin }) {
+  const containerRef = useRef(null);
+  const textRef = useRef(null);
+  const [showOrigin, setShowOrigin] = useState(true);
+
+  useEffect(() => {
+    if (containerRef.current && textRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const textWidth = textRef.current.scrollWidth;
+
+      setShowOrigin(textWidth <= containerWidth);
+    }
+  }, [stone]);
+
+  return (
+    <p ref={containerRef} className="text-gray-600 text-sm mb-2">
+      {stone.carat_weight}ct • {getTranslatedCut(stone.cut)}
+      {showOrigin && ` • ${getTranslatedOrigin(stone.origin)}`}
+      {/* Unsichtbarer Text für Messung */}
+      <span ref={textRef} className="absolute invisible whitespace-nowrap">
+        {stone.carat_weight}ct • {getTranslatedCut(stone.cut)} • {getTranslatedOrigin(stone.origin)}
+      </span>
+    </p>
+  );
 }
 
 
@@ -55,15 +81,15 @@ const translations = {
       cushion: "Kissen",
       brilliant: "Brillant",
       round: "Rund",
-      emerald: "Smaragd-Schliff",
-      princess: "Prinzessin-Schliff",
+      emerald: "Smaragd",
+      princess: "Prinzessin",
       marquise: "Marquise",
       pear: "Birne",
       asscher: "Asscher",
       radiant: "Radiant",
       trilliant: "Trilliant",
       heart: "Herz",
-      fancy: "Fancy",
+      fancy: "Unikat",
     },
     origins: {
       ceylon: "Ceylon",
@@ -116,7 +142,13 @@ const translations = {
       14: "Gelblich-Brauner Mali Granat",
       15: "Roter Rubin",
       16: "Lila-Roter Rubin",
-      17: "Roter Rubin"
+      17: "Roter Rubin",
+      18: "Lebendig-Grüner Peridot",
+      19: "Dunkel-Blau-Grüner Saphir",
+      20: "Hellgrüner Smaragd",
+      21: "Champagner Topaz",
+      22: "Bi-Color Tourmalin"
+
     },
     // Neu: Übersetzte Rarity-Levels (mit 4 Kategorien)
     rarity_levels: {
@@ -156,8 +188,8 @@ const translations = {
       cushion: "Cushion",
       brilliant: "Brilliant",
       round: "Round",
-      emerald: "Emerald Cut",
-      princess: "Princess Cut",
+      emerald: "Emerald-Cut",
+      princess: "Princess-Cut",
       marquise: "Marquise",
       pear: "Pear",
       asscher: "Asscher",
@@ -217,7 +249,12 @@ const translations = {
       14: "Yellowish-Brown Mali Garnet",
       15: "Red Ruby",
       16: "Pinkish-Red Ruby",
-      17: "Red Ruby"
+      17: "Red Ruby",
+      18: "Vivid-Green Peridot",
+      19: "Dark-Teal Sapphire",
+      20: "Light-Green Emerald",
+      21: "Champagne Topaz",
+      22: "Bi-Color Tourmaline"
     },
     rarity_levels: {
       exceptional: "Exceptional",
@@ -264,7 +301,7 @@ const translations = {
       radiant: "Radiant",
       trilliant: "Trilliant",
       heart: "Cœur",
-      fancy: "Fancy",
+      fancy: "Fantaisie",
     },
     origins: {
       ceylon: "Ceylan",
@@ -316,7 +353,12 @@ const translations = {
       14: "Grenat Brun-Jaunâtre du Mali",
       15: "Rubis Rouge",
       16: "Rubis Rouge-Pourpre",
-      17: "Rubis Rouge"
+      17: "Rubis Rouge",
+      18: "Péridot Vert-Vif",
+      19: "Saphir Bleu-Sarcelle-Foncé",
+      20: "Émeraude Vert-Clair",
+      21: "Topaze Champagne",
+      22: "Tourmaline Bicolore"
 
     },
 
@@ -666,7 +708,7 @@ export default function CollectionPage() {
                       <h3 className="serif-heading text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
                         {getTranslatedStoneName(stone.id)}
                       </h3>
-                      <p className="text-gray-600 text-sm mb-2">
+                      <p className="text-gray-600 text-sm mb-2 line-clamp-1">
                         {stone.carat_weight}ct • {getTranslatedCut(stone.cut)} • {getTranslatedOrigin(stone.origin)}
                       </p>
                       <div className="flex items-center justify-between">
