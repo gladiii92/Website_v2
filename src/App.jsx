@@ -12,6 +12,12 @@ import Datenschutz from "./pages/Datenschutz";
 import AGB from "./pages/AGB";
 import { gemstones } from "./data/Gemstones";
 
+// === SPA GitHub Pages Redirect Fix ===
+const path = new URLSearchParams(window.location.search).get("path");
+if (path) {
+  window.history.replaceState(null, null, "/" + path);
+}
+
 export default function App() {
   return (
     <>
