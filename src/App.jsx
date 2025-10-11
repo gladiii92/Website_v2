@@ -13,9 +13,10 @@ import AGB from "./pages/AGB";
 import { gemstones } from "./data/Gemstones";
 
 // === SPA GitHub Pages Redirect Fix ===
-const path = new URLSearchParams(window.location.search).get("path");
-if (path) {
-  window.history.replaceState(null, null, "/" + path);
+const redirect = sessionStorage.redirect;
+if (redirect) {
+  delete sessionStorage.redirect;
+  window.history.replaceState(null, null, '/' + redirect);
 }
 
 export default function App() {
