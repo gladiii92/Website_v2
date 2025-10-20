@@ -316,8 +316,8 @@ export default function HomePage() {
     return t.origins?.[origin?.toLowerCase()] || origin || 'N/A';
   };
 
-  const getTranslatedStoneName = (id) => {
-    return t.stone_names?.[id] || stone.name;  // Fallback auf originalen Namen
+  const getTranslatedStoneName = (stone) => {
+    return t.stone_names?.[stone.id] || stone.name || 'N/A';
   };
 
   const getTranslatedRarity = (rarity) => {
@@ -359,7 +359,7 @@ export default function HomePage() {
 
       <div className="p-6">
         <h3 className="serif-heading text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
-          {getTranslatedStoneName(stone.id)}
+          {getTranslatedStoneName(stone)}
         </h3>
         <p className="text-gray-600 text-sm mb-2">
           {stone.carat_weight} ct • {getTranslatedCut(stone.cut)} • {getTranslatedOrigin(stone.origin)}
@@ -381,7 +381,7 @@ export default function HomePage() {
       <Helmet>
         <title>NobleCutGems - Exquisite Edelsteine</title>
         <meta name="description" content={t.hero_subtitle} />
-        <link rel="canonical" href={window.location.href} />
+        <link rel="canonical" href="https://www.noblecutgems.com/" />
       </Helmet>
       <div className="min-h-screen">
         {/* Hero Section */}
