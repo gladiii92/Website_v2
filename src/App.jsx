@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Layout from "./components/Layout";
@@ -14,6 +15,15 @@ import { gemstones } from "./data/Gemstones";
 
 
 export default function App() {
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const path = url.searchParams.get('path'); // z.B. "/contact"
+
+    if (path && window.location.pathname !== path) {
+      window.history.replaceState(null, '', path + window.location.hash);
+    }
+  }, []);
+
   return (
     <>
       <ScrollToTop />
