@@ -1,17 +1,13 @@
 import './tailwind-output.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async'; // Neu: Importiere den Provider
 import App from './App';
+import './index.css';  // Oder den Pfad zu deiner Haupt-CSS-Datei
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <HelmetProvider> {/* Neu: Wrappe alles in HelmetProvider */}
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </HelmetProvider>
-  </React.StrictMode>
+  <HelmetProvider>
+    <App />
+  </HelmetProvider>
 );
