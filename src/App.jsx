@@ -1,21 +1,24 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Layout from "./components/Layout";
+import ScrollToTop from './components/ScrollToTop';
+
+// Pages
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Collection from "./pages/Collections";
 import Contact from "./pages/Contact";
 import Stone from "./pages/Stone";
-import ScrollToTop from './components/ScrollToTop';
 import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
 import AGB from "./pages/AGB";
 import { gemstones } from "./data/Gemstones";
 
 
+
 export default function App() {
   return (
-    <>
+    <BrowserRouter>
       <ScrollToTop />
       <Layout>
         <Helmet>
@@ -36,6 +39,6 @@ export default function App() {
           <Route path="*" element={<div>404 - Seite nicht gefunden</div>} />
         </Routes>
       </Layout>
-    </>
+    </BrowserRouter>
   );
 }

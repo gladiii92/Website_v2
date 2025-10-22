@@ -574,11 +574,11 @@ export default function CollectionPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{t.collection_title} | NobleCutGems</title>
-        <meta name="description" content={t.collection_subtitle} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
+        <Helmet>
+          <title>{t.collection_title} | NobleCutGems</title>
+          <meta name="description" content={t.collection_subtitle} />
+          <link rel="canonical" href={window.location.href} />
+        </Helmet>
       <div className="min-h-screen bg-white py-24">
         {/* Header */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
