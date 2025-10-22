@@ -26,11 +26,12 @@ export default function App() {
           <meta name="description" content="Premium Edelsteine von außergewöhnlicher Qualität." />
         </Helmet>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Home" element={<Navigate to="/" replace />} />
+          <Route path="/" element={<Navigate to="/Home" replace />} />
+          <Route path="/Home" element={<Home />} />
           <Route path="/Collection" element={<Collection />} />
           <Route path="/About" element={<About />} />
           <Route path="/Contact" element={<Contact />} />
+          <Route path="/404" element={<NotFound />} />
           <Route path="/Stone/:slug" element={<Stone />} />
           <Route path="/Stone" element={<Navigate to="/Collection" replace />} />
           <Route path="/Impressum" element={<Impressum />} />
