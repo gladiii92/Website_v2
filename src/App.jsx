@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Collection from "./pages/Collections";
 import Contact from "./pages/Contact";
 import Stone from "./pages/Stone";
+import NotFound from "./pages/NotFound";
 import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
 import AGB from "./pages/AGB";
