@@ -621,7 +621,7 @@ export default function StonePage() {
     const body = encodeURIComponent(
       `Name: ${inquiryForm.full_name}\nE-Mail: ${inquiryForm.email}\nTelefon: ${inquiryForm.phone}\n\n${inquiryForm.message}`
     );
-    window.location.href = `mailto:noblecutgems_official@gmx.de?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:info@noblecutgems.com?subject=${subject}&body=${body}`;
     setInquirySent(true);
     setTimeout(() => {
       setShowInquiryDialog(false);
