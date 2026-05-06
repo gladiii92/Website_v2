@@ -298,7 +298,7 @@ export default function Layout({ children, currentPageName }) {
                       </div>
                       <div className="flex items-center justify-center gap-2">
                         <Mail className="w-4 h-4" />
-                        <span>noblecutgems_official@gmx.de</span>
+                        <span>info@noblecutgems.com</span>
                       </div>
                       <div className="flex justify-center">
                         <LanguageSelector />
@@ -356,7 +356,7 @@ export default function Layout({ children, currentPageName }) {
                   </div>
                   <div className="flex items-center gap-2 justify-center md:justify-start">
                     <Mail className="w-4 h-4" />
-                    <span>noblecutgems_official@gmx.de</span>
+                    <span>info@noblecutgems.com</span>
                   </div>
                 </div>
               </div>
