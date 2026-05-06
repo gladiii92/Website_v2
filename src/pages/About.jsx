@@ -433,7 +433,7 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="relative order-2 lg:order-1">
                 <img
-                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                  src="/images/ueber_uns.png"
                   alt="Heritage craftsman"
                   style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover'}}
                   className="rounded-lg shadow-2xl mx-auto"

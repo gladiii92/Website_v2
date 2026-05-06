@@ -626,7 +626,7 @@ export const gemstones = [
 {
   id: 23,
   slug: "spinel-0-25ct-rosa-lila-burma",
-  name: "Spinel",
+  name: "Rosa-Lila Spinel",
   type: "spinel",
   carat_weight: 0.25,
   color: "Rosa-Lila",
@@ -654,7 +654,7 @@ export const gemstones = [
 {
   id: 24,
   slug: "spinel-0-29ct-weiss-burma",
-  name: "Spinel",
+  name: "Weißer Spinell",
   type: "spinel",
   carat_weight: 0.29,
   color: "Weiß",
@@ -682,7 +682,7 @@ export const gemstones = [
 {
   id: 25,
   slug: "spinel-0-31ct-rosa-burma",
-  name: "Spinel",
+  name: "Rosa Spinell",
   type: "spinel",
   carat_weight: 0.31,
   color: "Rosa",
@@ -710,7 +710,7 @@ export const gemstones = [
 {
   id: 26,
   slug: "spinel-0-32ct-rosa-leicht-burma",
-  name: "Spinel",
+  name: "Leichter-Rosa Spinell",
   type: "spinel",
   carat_weight: 0.32,
   color: "Leichtes Rosa",
@@ -738,7 +738,7 @@ export const gemstones = [
 {
   id: 27,
   slug: "spinel-0-33ct-rotlich-rosa-burma",
-  name: "Spinel",
+  name: "Rötlich-Rosa Spinell",
   type: "spinel",
   carat_weight: 0.33,
   color: "Rötlich-Rosa",
@@ -766,7 +766,7 @@ export const gemstones = [
 {
   id: 28,
   slug: "spinel-0-34ct-lila-burma",
-  name: "Spinel",
+  name: "Lila Spinell",
   type: "spinel",
   carat_weight: 0.34,
   color: "Lila",
@@ -794,7 +794,7 @@ export const gemstones = [
 {
   id: 29,
   slug: "spinel-0-41ct-lila-grau-burma",
-  name: "Spinel",
+  name: "Lila-Grauer Spinell",
   type: "spinel",
   carat_weight: 0.41,
   color: "Lila-Grau",
@@ -822,7 +822,7 @@ export const gemstones = [
 {
   id: 30,
   slug: "spinel-0-43ct-hellrosa-burma",
-  name: "Spinel",
+  name: "Hellrosa Spinell",
   type: "spinel",
   carat_weight: 0.43,
   color: "Leichtes Rosa",
@@ -850,7 +850,7 @@ export const gemstones = [
 {
   id: 31,
   slug: "spinel-0-46ct-grau-burma",
-  name: "Spinel",
+  name: "Grauer Spinell",
   type: "spinel",
   carat_weight: 0.46,
   color: "Grau",
@@ -878,7 +878,7 @@ export const gemstones = [
 {
   id: 32,
   slug: "spinel-0-64ct-vivid-purple-burma",
-  name: "Spinel",
+  name: "Lila Spinell",
   type: "spinel",
   carat_weight: 0.64,
   color: "Vivid Purple",
@@ -906,7 +906,7 @@ export const gemstones = [
 {
   id: 33,
   slug: "spinel-0-74ct-grau-feuer-burma",
-  name: "Spinel",
+  name: "Grauer Spinell",
   type: "spinel",
   carat_weight: 0.74,
   color: "Grau mit Feuer",
@@ -934,7 +934,7 @@ export const gemstones = [
 {
   id: 34,
   slug: "spinel-0-85ct-weiss-grau-burma",
-  name: "Spinel",
+  name: "Weiß-Grauer Spinell",
   type: "spinel",
   carat_weight: 0.85,
   color: "Weiß-Grau",
