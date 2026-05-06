@@ -184,7 +184,7 @@ export default function ContactPage() {
       `Sprache: ${dataToSend.preferred_language}`
     );
 
-    const mailtoUrl = `mailto:noblecutgems_official@gmx.de?subject=${emailSubject}&body=${emailBody}`;
+    const mailtoUrl = `mailto:info@noblecutgems.com?subject=${emailSubject}&body=${emailBody}`;
 
     // Öffnen des E-Mail-Clients
     window.location.href = mailtoUrl;
@@ -436,13 +436,13 @@ export default function ContactPage() {
                     </div>
                   </a>
 
-                  <a href="mailto:noblecutgems_official@gmx.de" className="mt-8 flex items-start gap-4 hover:opacity-80 transition-opacity">
+                  <a href="mailto:info@noblecutgems.com" className="mt-8 flex items-start gap-4 hover:opacity-80 transition-opacity">
                     <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{backgroundColor: 'var(--cta-color)', opacity: 0.2}}>
                       <Mail className="w-6 h-6" style={{color: 'var(--cta-color)'}} />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-0">{t.email_title}</h3>
-                      <p className="text-gray-600 mt-5 mb-8">noblecutgems_official@gmx.de</p>
+                      <p className="text-gray-600 mt-5 mb-8">info@noblecutgems.com</p>
                     </div>
                   </a>
                 </CardContent>
