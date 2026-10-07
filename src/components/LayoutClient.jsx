@@ -270,14 +270,6 @@ export default function LayoutClient({ children, lang }) {
                         {t.wishlist} ({wishlistCount})
                       </Link>
                     </nav>
-                <Link href={`/${language}/wishlist`} className="relative text-gray-600 dark:text-gray-300 hover:text-cta-color transition-colors mr-4" title={t.wishlist}>
-                  <Heart className="w-6 h-6" />
-                  {wishlistCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-cta-color text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </Link>
                 
                 <LanguageSelector />
               </div>
