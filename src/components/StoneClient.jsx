@@ -1,7 +1,9 @@
+'use client';
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import Link from "next/link";
+import { useParams, useRouter, usePathname } from "next/navigation";
 import { createPageUrl } from "../utils";
+import Image from "next/image";
 import { gemstones } from "../data/Gemstones";
 import { ArrowLeft, Play, Pause, Share2, Award, Shield, Sparkles, ChevronLeft, ChevronRight, Info } from "lucide-react";
 import { Button } from "../components/ui/Button";
@@ -10,7 +12,6 @@ import { Card, CardContent } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
 import { Textarea } from "../components/ui/Textarea";
 import { Label } from "../components/ui/Label";
-import { useLocation } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 
 import {
@@ -492,10 +493,8 @@ const translations = {
   }
 };
 
-export default function StonePage() {
-  const navigate = useNavigate();
-  const { slug } = useParams(); // Neu: Hole Slug aus URL
-  const location = useLocation();
+export default function StoneClient({ lang, slug }) {
+  const router = useRouter();
   const [language, setLanguage] = useState("de");
   const [stone, setStone] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -537,11 +536,11 @@ export default function StonePage() {
     if (slug) {
       loadStoneBySlug(slug);
     } else {
-      navigate(createPageUrl("Collection"));
+      router.push(`/${language}/collection`);
     }
 
     return () => window.removeEventListener('languageChange', handleLanguageChange);
-  }, [navigate, slug]);
+  }, [router, slug]);
 
   const loadStoneBySlug = async (slug) => {
     try {
@@ -550,11 +549,11 @@ export default function StonePage() {
         setStone(stoneData); 
         generateThumbnails(stoneData);
       } else {
-        navigate(createPageUrl("Collection"));
+        router.push(`/${language}/collection`);
       }
     } catch (error) {
       console.error('Error loading stone:', error);
-      navigate(createPageUrl("Collection"));
+      router.push(`/${language}/collection`);
     } finally {
       setLoading(false);
     }
@@ -598,14 +597,14 @@ export default function StonePage() {
         if (media.endsWith('.mp4')) {
           const video = document.createElement('video');
           video.src = media;
-          video.preload = 'auto'; // Lädt das Video im Voraus
+          video.preload = 'auto'; // L•dt das Video im Voraus
           video.style.display = 'none'; // Unsichtbar
-          document.body.appendChild(video); // Fügt zum DOM hinzu, um zu laden
+          document.body.appendChild(video); // F•gt zum DOM hinzu, um zu laden
           // Entferne nach Laden, um Speicher zu sparen (optional)
           video.onloadeddata = () => document.body.removeChild(video);
         } else {
-          const img = new Image();
-          img.src = media; // Lädt Bilder im Voraus
+          const img = new window.Image();
+          img.src = media; // L•dt Bilder im Voraus
         }
       });
     };
@@ -725,7 +724,7 @@ export default function StonePage() {
       <div className="min-h-screen bg-white py-24 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.stone_not_found}</h2>
-          <Link to={createPageUrl("Collection")}>
+          <Link href={createPageUrl("Collection")}>
             <Button>{t.back_to_collection}</Button>
           </Link>
         </div>
@@ -735,16 +734,12 @@ export default function StonePage() {
 
   return (
     <>
-      <Helmet>
-        <title>{getTranslatedStoneName(stone?.id) || 'Edelstein'} | NobleCutGems</title>
-        <meta name="description" content={stone ? stone[`description_${language}`]?.substring(0, 160) : 'Entdecken Sie exklusive Edelsteine bei NobleCutGems.'} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
-      <div className="min-h-screen bg-white py-24">
+
+      <main className="min-h-screen bg-white py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Back button */}
           <Link 
-            to={createPageUrl("Collection")}
+            href={createPageUrl("Collection")}
             className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors duration-300"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -769,11 +764,13 @@ export default function StonePage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <img
+                  <Image
                     key={currentIndex}
                     src={allMedia[currentIndex] || ""}
-                    alt={stone.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-opacity duration-300 opacity-100"
+                    alt={`${stone.name} Ansicht`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover group-hover:scale-105 transition-opacity duration-300 opacity-100"
                     loading="eager"
                   />
                 )}
@@ -815,7 +812,9 @@ export default function StonePage() {
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
-                      <img src={thumb} alt={`${stone.name} ${index + 1}`} className="w-full h-full object-cover" />
+                      <div className="relative w-full h-full">
+                        <Image src={thumb} alt={`${stone.name} ${index + 1}`} fill sizes="100px" className="object-cover" />
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -886,7 +885,7 @@ export default function StonePage() {
 
                 <div dangerouslySetInnerHTML={{ __html: stone[`description_${language}`] || stone.description_de }} className="text-gray-700 leading-relaxed mb-8" />
 
-                {/* Specifications – direkt unter Beschreibung */}
+                {/* Specifications • direkt unter Beschreibung */}
                 <Card className="mb-20">
                   <CardContent className="p-6 ">
                     <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-2 flex items-center p-2">
@@ -952,7 +951,7 @@ export default function StonePage() {
                   </CardContent>
                 </Card>
 
-                {/* Anfrage – unter Spezifikationen, nur 1x */}
+                {/* Anfrage • unter Spezifikationen, nur 1x */}
                 <Dialog open={showInquiryDialog} onOpenChange={setShowInquiryDialog}>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
@@ -1005,7 +1004,7 @@ export default function StonePage() {
                             name="message"
                             value={inquiryForm.message}
                             onChange={(e) => setInquiryForm({...inquiryForm, message: e.target.value})}
-                            placeholder={`Ich interessiere mich für ${stone.name}...`}
+                            placeholder={`Ich interessiere mich f•r ${stone.name}...`}
                             required
                           />
                         </div>
@@ -1020,7 +1019,7 @@ export default function StonePage() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

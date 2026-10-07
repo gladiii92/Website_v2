@@ -1,5 +1,5 @@
+'use client';
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import { Phone, Mail, MapPin, Clock, Send, Award } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
@@ -134,8 +134,8 @@ const translations = {
   }
 };
 
-export default function ContactPage() {
-  const [language, setLanguage] = useState("de");
+export default function ContactPage({ lang }) {
+  const [language, setLanguage] = useState(lang || "de");
   const [inquirySent, setInquirySent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -172,7 +172,7 @@ export default function ContactPage() {
       preferred_language: language
     };
 
-    // Erstellen der mailto-URL mit vorab gefüllten Daten
+    // Erstellen der mailto-URL mit vorab gef?llten Daten
     const emailSubject = encodeURIComponent(`Anfrage: ${dataToSend.inquiry_type || 'Allgemein'}`);
     const emailBody = encodeURIComponent(
       `Name: ${dataToSend.full_name}\n` +
@@ -186,7 +186,7 @@ export default function ContactPage() {
 
     const mailtoUrl = `mailto:info@noblecutgems.com?subject=${emailSubject}&body=${emailBody}`;
 
-    // Öffnen des E-Mail-Clients
+    // ?ffnen des E-Mail-Clients
     window.location.href = mailtoUrl;
 
     // Erfolgszustand simulieren (da keine echte API verwendet wird)
@@ -219,11 +219,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{t.page_title} | NobleCutGems</title>
-        <meta name="description" content={t.page_subtitle} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
+      
       <div className="min-h-screen bg-white py-24">
         {/* Hero Section */}
         <section className="py-16 bg-gradient-to-br from-champagne to-white">
@@ -490,3 +486,4 @@ export default function ContactPage() {
     </>
   );
 }
+

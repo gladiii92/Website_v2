@@ -1,3 +1,4 @@
+﻿'use client';
 
 
 
@@ -24,3 +25,4 @@ export function DialogDescription({ children }) {
 export function DialogFooter({ children }) {
   return <div>{children}</div>;
 }
+

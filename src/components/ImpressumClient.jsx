@@ -1,5 +1,5 @@
+'use client';
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 
 const translations = {
   de: {
@@ -37,8 +37,8 @@ const translations = {
   }
 };
 
-export default function Impressum() {
-  const [language, setLanguage] = useState("de");
+export default function ImpressumClient({ lang }) {
+  const [language, setLanguage] = useState(lang || "de");
   const t = translations[language];
 
   useEffect(() => {
@@ -55,11 +55,7 @@ export default function Impressum() {
 
   return (
     <>
-      <Helmet>
-        <title>{t.title} | NobleCutGems</title>
-        <meta name="description" content="Impressum und rechtliche Informationen zu NobleCutGems." />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
+      
       <div className="max-w-4xl mx-auto py-16 px-4 pt-24"> 
         <h1 className="text-3xl font-bold mb-6">{t.title}</h1>
         <p><strong>Firmenname:</strong> {t.company}</p>
@@ -74,3 +70,4 @@ export default function Impressum() {
     </>
   );
 }
+

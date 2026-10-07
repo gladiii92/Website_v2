@@ -1,13 +1,12 @@
+'use client';
+
 import React, { useState, useEffect, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "../utils";
+import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Sparkles, Crown, Shield, Award } from "lucide-react";
-import { Button } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
+import { Button } from "./ui/Button";
+import { Badge } from "./ui/Badge";
 import { gemstones } from "../data/Gemstones";
-
-
 
 const translations = {
   de: {
@@ -231,8 +230,7 @@ const translations = {
   }
 };
 
-export default function HomePage() {
-  const [language, setLanguage] = useState("de");
+export default function HomeClient({ lang }) {
   const [featuredStones, setFeaturedStones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -240,10 +238,10 @@ export default function HomePage() {
     return shuffleArray(featuredStones).slice(0, 6);
   }, [featuredStones]);
 
-  const t = translations[language];
+  const t = translations[lang] || translations.de;
 
   function shuffleArray(array) {
-    const newArr = [...array]; // Kopie, um Original nicht zu verändern
+    const newArr = [...array];
     for (let i = newArr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
@@ -253,33 +251,18 @@ export default function HomePage() {
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile(); // Initial prüfen
+    checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
-    const handleLanguageChange = (event) => {
-      setLanguage(event.detail);
-    };
-    // Get language from localStorage
-    const storedLang = localStorage.getItem('language') || 'de';
-    if (translations[storedLang]) { // Ensure storedLang is a valid key
-      setLanguage(storedLang);
-    } else {
-      setLanguage('de'); // Fallback to default if storedLang is invalid
-    }
-    
     loadFeaturedStones();
-
-    window.addEventListener('languageChange', handleLanguageChange);
-    return () => window.removeEventListener('languageChange', handleLanguageChange);
   }, []);
 
   const loadFeaturedStones = () => {
     setLoading(true);
     try {
-      // nur die Steine nehmen, die als "featured" markiert und nicht verkauft sind
       const stones = gemstones.filter(s => s.is_featured && !s.is_sold);
       setFeaturedStones(stones);
     } catch (error) {
@@ -327,37 +310,37 @@ export default function HomePage() {
   const [bgLoaded, setBgLoaded] = useState(false);
 
   useEffect(() => {
-    const img = new Image();
+    const img = new window.Image();
     img.src = "/images/banner.jpg";
     img.onload = () => setBgLoaded(true);
   }, []);
-
-  const featuredStonesMemo = useMemo(() => featuredStones, [featuredStones]);
 
   const StoneCard = React.memo(({ stone }) => (
     <div 
       className={`group bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 ${!isMobile ? "hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" : ""}`} >
       <div className="relative aspect-square overflow-hidden bg-gray-50">
-        <img
-          src={stone.main_image_url || ""}
-          alt={stone.name}
-          className={`w-full h-full object-cover ${!isMobile ? "group-hover:scale-110 transition-transform duration-700" : ""}`}
-          loading="lazy"
-        />
+        {stone.main_image_url && (
+          <Image
+            src={stone.main_image_url}
+            alt={`${stone.name} Ansicht`}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className={`w-full h-full object-cover ${!isMobile ? "group-hover:scale-110 transition-transform duration-700" : ""}`}
+            loading="lazy"
+          />
+        )}
         <div className={`absolute inset-0 bg-black/0 ${!isMobile ? "group-hover:bg-black/20 transition-colors duration-300" : ""}`}></div>
         
-        {/* Badges */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
           <Badge className={`${getRarityColor(stone.rarity_level)} border backdrop-blur-sm`}>
             {getTranslatedRarity(stone.rarity_level)}
           </Badge>
         </div>
 
-        {/* Hover overlay – nur leichter Overlay und Zoom, kein Button */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/10"></div>
       </div>
 
-      <div className="p-6">
+      <div className="p-6 relative z-10">
         <h3 className="serif-heading text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
           {getTranslatedStoneName(stone)}
         </h3>
@@ -375,173 +358,160 @@ export default function HomePage() {
       </div>
     </div>
   ));
+  StoneCard.displayName = 'StoneCard';
 
   return (
-    <>
-      <Helmet>
-        <title>NobleCutGems - Exquisite Edelsteine</title>
-        <meta name="description" content={t.hero_subtitle} />
-        <link rel="canonical" href="https://www.noblecutgems.com/" />
-      </Helmet>
-      <div className="min-h-screen">
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          <div 
-            className="absolute inset-0 z-0 opacity-90 transition-opacity duration-500 hero-bg"
-            style={{
-              backgroundColor: '#1a1a1a', // fallback color, z.B. dunkelgrau, damit nicht weiß
-              backgroundImage: bgLoaded 
-                ? 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url("/images/banner.jpg")'
-                : 'none',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              opacity: bgLoaded ? 1 : 0,
-            }}
-          />
+    <main className="min-h-screen">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 z-0 opacity-90 transition-opacity duration-500 hero-bg"
+          style={{
+            backgroundColor: '#1a1a1a', 
+            backgroundImage: bgLoaded 
+              ? 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url("/images/banner.jpg")'
+              : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: bgLoaded ? 1 : 0,
+          }}
+        />
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center text-white">
+          <h1 className="serif-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight pt-16">
+            {t.hero_title}
+          </h1>
           
-          <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center text-white">
-            {/* Removed: <div className="mb-8"><Badge className="bg-white/20 text-white border-white/30 mb-6 px-4 py-2 text-sm backdrop-blur-sm"><Sparkles className="w-4 h-4 mr-2" />Premium Collection 2024</Badge></div> */}
-            
-            <h1 className="serif-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight pt-16">
-              {t.hero_title}
-            </h1>
-            
-            <p className="text-xl md:text-2xl mb-12 text-gray-100 max-w-3xl mx-auto leading-relaxed">
-              {t.hero_subtitle}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link to="/Collection">
-                <Button className="primary-btn hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold rounded-none transition-all duration-300 transform hover:scale-105 flex items-center mx-auto sm:mx-0">
-                  {t.view_collection}
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-            </div>
+          <p className="text-xl md:text-2xl mb-12 text-gray-100 max-w-3xl mx-auto leading-relaxed">
+            {t.hero_subtitle}
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Link href={`/${lang}/collection`}>
+              <Button className="primary-btn hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold rounded-none transition-all duration-300 transform hover:scale-105 flex items-center mx-auto sm:mx-0">
+                {t.view_collection}
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
           </div>
+        </div>
 
-          {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block animate-bounce">
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
-            </div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Featured Stones Section – jetzt identisch zur Collections-Präsentation */}
-        <section className="py-32 bg-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="serif-heading text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                {t.featured_stones}
-              </h2>
-              <div className="w-24 h-1 mx-auto" style={{backgroundColor: 'var(--primary-color)'}}></div>
-            </div>
-
-            {loading ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {Array(6).fill(0).map((_, i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {shuffledFeaturedStones.map((stone) => (
-                  <Link key={stone.id} to={`/stone/${stone.slug}`}>
-                    <StoneCard stone={stone} />
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Why Choose Section */}
-        <section className="py-32 bg-champagne">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="serif-heading text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                {t.why_choose}
-              </h2>
-              <div className="w-24 h-1 mx-auto" style={{backgroundColor: 'var(--primary-color)'}}></div>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center group">
-                <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
-                  <Crown className="w-10 h-10" style={{color: 'var(--primary-color)'}} />
-                </div>
-                <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
-                  {t.expertise_title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t.expertise_desc}
-                </p>
-              </div>
-
-              <div className="text-center group">
-                <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
-                  <Shield className="w-10 h-10" style={{color: 'var(--success)'}} />
-                </div>
-                <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
-                  {t.certification_title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t.certification_desc}
-                </p>
-              </div>
-
-              <div className="text-center group">
-                <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
-                  <Sparkles className="w-10 h-10" style={{color: 'var(--cta-color)'}} />
-                </div>
-                <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
-                  {t.heritage_title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t.heritage_desc}
-                </p>
-              </div>
-
-              <div className="text-center group">
-                <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
-                  <Award className="w-10 h-10" style={{color: 'var(--primary-color)'}} />
-                </div>
-                <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
-                  {t.exclusivity_title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t.exclusivity_desc}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Call to Action */}
-        <section className="py-24 bg-primary-dark text-white">
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-            <h2 className="serif-heading text-3xl md:text-4xl font-bold mb-6">
-              {language === 'de' ? 'Bereit für Ihre persönliche Beratung?' : language === 'fr' ? 'Prêt pour votre consultation personnelle ?' : 'Ready for your personal consultation?'}
+      <section className="py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="serif-heading text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              {t.featured_stones}
             </h2>
-            <p className="text-xl text-gray-600 mb-8">
-              {language === 'de' ? 'Lassen Sie sich von unseren zertifizierten Experten bei der Auswahl Ihres perfekten Edelsteins beraten.' : language === 'fr' ? 'Laissez nos experts certifiés vous conseiller dans le choix de votre pierre précieuse parfaite.' : 'Let our certified experts advise you on choosing your perfect gemstone.'}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link to={createPageUrl("Contact")}>
-                <Button className="cta-btn hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-none transition-all duration-300 flex items-center mx-auto sm:mx-0">
-                  {t.cta_consultation}
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
+            <div className="w-24 h-1 mx-auto" style={{backgroundColor: 'var(--primary-color)'}}></div>
+          </div>
+
+          {loading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array(6).fill(0).map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-gray-200 aspect-square rounded-lg mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {shuffledFeaturedStones.map((stone) => (
+                <Link key={stone.id} href={`/${lang}/stone/${stone.slug}`}>
+                  <StoneCard stone={stone} />
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="py-32 bg-champagne">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="serif-heading text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              {t.why_choose}
+            </h2>
+            <div className="w-24 h-1 mx-auto" style={{backgroundColor: 'var(--primary-color)'}}></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center group">
+              <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
+                <Crown className="w-10 h-10" style={{color: 'var(--primary-color)'}} />
+              </div>
+              <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
+                {t.expertise_title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {t.expertise_desc}
+              </p>
+            </div>
+
+            <div className="text-center group">
+              <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
+                <Shield className="w-10 h-10" style={{color: 'var(--success)'}} />
+              </div>
+              <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
+                {t.certification_title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {t.certification_desc}
+              </p>
+            </div>
+
+            <div className="text-center group">
+              <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
+                <Sparkles className="w-10 h-10" style={{color: 'var(--cta-color)'}} />
+              </div>
+              <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
+                {t.heritage_title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {t.heritage_desc}
+              </p>
+            </div>
+
+            <div className="text-center group">
+              <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 ${!isMobile ? "group-hover:scale-110 transition-transform duration-300 shadow-lg" : "shadow"}`}>
+                <Award className="w-10 h-10" style={{color: 'var(--primary-color)'}} />
+              </div>
+              <h3 className="serif-heading text-xl font-semibold text-gray-900 mb-4">
+                {t.exclusivity_title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {t.exclusivity_desc}
+              </p>
             </div>
           </div>
-        </section>
-      </div>
-    </>
+        </div>
+      </section>
+
+      <section className="py-24 bg-primary-dark text-white">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="serif-heading text-3xl md:text-4xl font-bold mb-6">
+            {lang === 'de' ? 'Bereit f•r Ihre pers•nliche Beratung?' : lang === 'fr' ? 'Pr•t pour votre consultation personnelle ?' : 'Ready for your personal consultation?'}
+          </h2>
+          <p className="text-xl text-gray-600 mb-8">
+            {lang === 'de' ? 'Lassen Sie sich von unseren zertifizierten Experten bei der Auswahl Ihres perfekten Edelsteins beraten.' : lang === 'fr' ? 'Laissez nos experts certifi•s vous conseiller dans le choix de votre pierre pr•cieuse parfaite.' : 'Let our certified experts advise you on choosing your perfect gemstone.'}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Link href={`/${lang}/contact`}>
+              <Button className="cta-btn hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-none transition-all duration-300 flex items-center mx-auto sm:mx-0">
+                {t.cta_consultation}
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

@@ -1,5 +1,5 @@
+'use client';
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 
 const translations = {
   de: {
@@ -88,10 +88,15 @@ const translations = {
   }
 };
 
-export default function Datenschutz() {
-  const [language, setLanguage] = useState("de");
+export default function DatenschutzClient({ lang }) {
+  const [language, setLanguage] = useState(lang || "de");
   const [showBanner, setShowBanner] = useState(true);
-  const [gaConsent, setGaConsent] = useState(localStorage.getItem("ga-consent") || "pending");
+  const [gaConsent, setGaConsent] = useState("pending");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setGaConsent(localStorage.getItem("ga-consent") || "pending");
+    }
+  }, []);
   const t = translations[language];
 
   useEffect(() => {
@@ -108,11 +113,7 @@ export default function Datenschutz() {
 
   return (
     <>
-      <Helmet>
-        <title>{t.title} | NobleCutGems</title>
-        <meta name="description" content={t.intro} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
+      
       <div className="max-w-4xl mx-auto py-16 px-4 pt-24">
         <h1 className="text-3xl font-bold mb-6">{t.title}</h1>
         <p>{t.intro}</p>
@@ -166,3 +167,4 @@ export default function Datenschutz() {
     </>
   );
 }
+

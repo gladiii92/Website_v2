@@ -422,7 +422,7 @@ export const gemstones = [
   video_url: "/videos/rubin-0-29ct-rot-fancy-360.mp4",
   created_date: "2025-10-09",
   is_featured: true,
-  is_sold: false,
+  is_sold: true,
   description_de: "<p>Ein <strong>natürlicher Rubin</strong> mit 0,29 Karat – unbehandelt und in wunderschönem Rot.</p><p>Der Edelstein ist augenrein bis VS, was ihn besonders klar und lebendig erscheinen lässt. Der Fancy Cut bringt das Feuer und die Farbe perfekt zur Geltung.</p><ul><li><strong>Seltenheit</strong>: Premium – klare Qualität und intensive rote Farbe.</li><li><strong>Preis</strong>: 190 € – fairer Wert für einen hochwertigen kleinen Rubin.</li></ul><p>Perfekt für feine Schmuckstücke oder als Sammlerstück.</p>",
   description_en: "<p>A <strong>natural ruby</strong> weighing 0.29 carats – untreated and showcasing beautiful red color.</p><p>The gem is eye-clean to VS, giving it clarity and lively brilliance. The Fancy Cut enhances its fire and color perfectly.</p><ul><li><strong>Rarity</strong>: Premium – clear quality with intense red color.</li><li><strong>Price</strong>: €190 – fair value for a high-quality small ruby.</li></ul><p>Ideal for delicate jewelry or as a collector’s gem.</p>",
   description_fr: "<p>Un <strong>rubis naturel</strong> de 0,29 carat – non traité et d’un rouge éclatant.</p><p>La pierre est exempte d’inclusions visibles à VS, lui conférant clarté et brillance. La taille fancy met parfaitement en valeur le feu et la couleur.</p><ul><li><strong>Rareté</strong> : Premium – qualité claire avec couleur rouge intense.</li><li><strong>Prix</strong> : 190 € – valeur juste pour un petit rubis de haute qualité.</li></ul><p>Parfait pour des bijoux fins ou comme pierre de collection.</p>"

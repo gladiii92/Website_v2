@@ -1,5 +1,5 @@
+'use client';
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 
 const translations = {
   de: {
@@ -31,8 +31,8 @@ const translations = {
   }
 };
 
-export default function AGB() {
-  const [language, setLanguage] = useState("de");
+export default function AGBClient({ lang }) {
+  const [language, setLanguage] = useState(lang || "de");
   const t = translations[language];
 
   useEffect(() => {
@@ -49,11 +49,7 @@ export default function AGB() {
 
   return (
     <>
-      <Helmet>
-        <title>{t.title} | NobleCutGems</title>
-        <meta name="description" content={t.intro} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
+      
       <div className="max-w-4xl mx-auto py-16 px-4 pt-24">
         <h1 className="text-3xl font-bold mb-6">{t.title}</h1>
         <p>{t.intro}</p>
@@ -62,8 +58,9 @@ export default function AGB() {
         <p className="mt-4 mb-3">{t.liability}</p>
         <p className="mt-4 mb-3">{t.guarantee}</p>
         <p className="mt-4 mb-3">{t.jurisdiction}</p>
-        {/* Erweitere mit vollständigen AGB-Details */}
+        {/* Erweitere mit vollst?ndigen AGB-Details */}
       </div>
     </>
   );
 }
+

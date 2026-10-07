@@ -1,3 +1,4 @@
+﻿'use client';
 // src/components/ui/Accordion.jsx (manuelle Version)
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
@@ -36,3 +37,4 @@ const AccordionContent = React.forwardRef(({ className, children, ...props }, re
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+

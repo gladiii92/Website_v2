@@ -1,7 +1,7 @@
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '../utils';
+import Link from 'next/link';
+import Image from 'next/image';
 import { Search, Filter, ChevronDown, Eye } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -288,8 +288,8 @@ const translations = {
   },
 };
 
-export default function CollectionPage() {
-  const [language, setLanguage] = useState('de');
+export default function CollectionClient({ lang }) {
+  const [language, setLanguage] = useState(lang);
   const [loading, setLoading] = useState(true);
   const [stones, setStones] = useState([]);
   const [filteredStones, setFilteredStones] = useState([]);
@@ -297,7 +297,14 @@ export default function CollectionPage() {
   const [filters, setFilters] = useState({ type: 'all', priceRange: 'all', rarity: 'all' });
   const [sortBy, setSortBy] = useState('-createddate');
   const [shuffledStoneIds, setShuffledStoneIds] = useState([]);
-  const isMobile = window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const t = translations[language];
 
   // Sprach-Init
@@ -401,7 +408,7 @@ export default function CollectionPage() {
       ? shuffledStoneIds.map(id => stones.find(s => s.id === id)).filter(Boolean)
       : filteredStones;
 
-  // ─── ÜBERSETZUNGS-HELFER ────────────────────────────────────────────────────
+  // â”€â”€â”€ ÜBERSETZUNGS-HELFER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const getTranslatedType = (type) =>
     t.types?.[type?.toLowerCase()] || type || 'N/A';
 
@@ -416,8 +423,8 @@ export default function CollectionPage() {
 
   /**
    * getTranslatedStoneName
-   * Priorität: stonenames-Lookup (IDs 1–22) → stone.name (alle neuen Steine ab ID 23+)
-   * NEUEN STEIN HINZUFÜGEN: Nur in Gemstones.js eintragen — hier nichts ändern!
+   * Priorität: stonenames-Lookup (IDs 1–22) â†’ stone.name (alle neuen Steine ab ID 23+)
+   * NEUEN STEIN HINZUFÜGEN: Nur in Gemstones.js eintragen â€” hier nichts ändern!
    */
   const getTranslatedStoneName = (stoneId) => {
     if (t.stonenames?.[stoneId]) return t.stonenames[stoneId];
@@ -433,7 +440,7 @@ export default function CollectionPage() {
     setSortBy('-createddate');
   };
 
-  // ─── LOADING SKELETON ───────────────────────────────────────────────────────
+  // â”€â”€â”€ LOADING SKELETON â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (loading) {
     return (
       <div className="min-h-screen bg-white py-24">
@@ -452,16 +459,10 @@ export default function CollectionPage() {
     );
   }
 
-  // ─── RENDER ─────────────────────────────────────────────────────────────────
+  // â”€â”€â”€ RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   return (
     <>
-      <Helmet>
-        <title>{t.collectiontitle} | NobleCutGems</title>
-        <meta name="description" content={t.collectionsubtitle} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
-
-      <div className="min-h-screen bg-white py-24">
+      <main className="min-h-screen bg-white py-24">
         {/* Header */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -572,7 +573,7 @@ export default function CollectionPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {stonesToDisplay.map((stone) => (
-                <Link key={stone.id} to={`/stone/${stone.slug}`}>
+                <Link key={stone.id} href={`/${language}/stone/${stone.slug}`}>
                   <div
                     className={`group bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 ${
                       !isMobile ? 'hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2' : ''
@@ -580,14 +581,18 @@ export default function CollectionPage() {
                   >
                     {/* Bild */}
                     <div className="relative aspect-square overflow-hidden bg-gray-50">
-                      <img
-                        src={stone.main_image_url}
-                        alt={stone.name}
-                        className={`w-full h-full object-cover ${
-                          !isMobile ? 'group-hover:scale-110 transition-transform duration-700' : ''
-                        }`}
-                        loading="lazy"
-                      />
+                      {stone.main_image_url && (
+                        <Image
+                          src={stone.main_image_url}
+                          alt={`${stone.name} Ansicht`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className={`w-full h-full object-cover ${
+                            !isMobile ? 'group-hover:scale-110 transition-transform duration-700' : ''
+                          }`}
+                          loading="lazy"
+                        />
+                      )}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
 
                       {/* Badge */}
@@ -625,7 +630,7 @@ export default function CollectionPage() {
             </div>
           )}
         </div>
-      </div>
+      </main>
     </>
   );
 }

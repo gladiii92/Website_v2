@@ -1,46 +1,15 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Webseite von NobleCutGems" />
-    <title>NobleCutGems</title>
+    <meta http-equiv="refresh" content="0; url=/de" />
+    <title>Redirecting...</title>
   </head>
   <body>
-    <noscript>Du musst JavaScript aktivieren, um diese Webseite zu nutzen.</noscript>
-    <div id="root"></div>
-
-    <!-- Start Single Page Apps for GitHub Pages -->
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
-      // This script takes the current url and converts the path and query
-      // string into just a query string, and then redirects the browser
-      // to the new url with only a query string and hash fragment,
-      // e.g. https://www.foo.tld/one/two?a=b&c=d#qwe, becomes
-      // https://www.foo.tld/?/one/two&a=b~and~c=d#qwe
-      // Note: this 404.html file must be at least 512 bytes for it to work
-      // with Internet Explorer (it is currently > 512 bytes)
-
-      // If you're creating a Project Pages site and NOT using a custom domain,
-      // then set pathSegmentsToKeep to 1 (instead of 0).
-      // That will give you `username.github.io/project-name/?/foo/bar`
-      var pathSegmentsToKeep = 0;  // Setze auf 1 für Project Pages
-
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
-        }
-      }(window.location))
+    <script>
+      var lang = navigator.language.split('-')[0];
+      var supported = ['de', 'en', 'fr'];
+      var target = supported.includes(lang) ? lang : 'de';
+      window.location.replace('/' + target);
     </script>
-    <!-- End Single Page Apps for GitHub Pages -->
   </body>
 </html>

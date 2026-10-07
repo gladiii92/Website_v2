@@ -1,5 +1,5 @@
+'use client';
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import { Award, Users, Globe, Heart, Sparkles, Crown } from "lucide-react";
 import { Card, CardContent } from "../components/ui/Card";
 import { Carousel } from 'react-responsive-carousel';
@@ -102,8 +102,8 @@ const translations = {
   }
 };
 
-export default function AboutPage() {
-  const [language, setLanguage] = useState("de");
+export default function AboutPage({ lang }) {
+  const [language, setLanguage] = useState(lang || "de");
   const t = translations[language];
 
   useEffect(() => {
@@ -136,11 +136,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <Helmet>
-        <title>{t.page_title} | NobleCutGems</title>
-        <meta name="description" content={t.page_subtitle} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
+      
       <div className="min-h-screen bg-white py-24">
         {/* Hero Section */}
         <section className="relative py-24 bg-gradient-to-br from-champagne to-white overflow-hidden">
@@ -265,7 +261,7 @@ export default function AboutPage() {
               </Card>
             </div>
 
-            {/* Statischer Carousel für Zertifikate – direkt unter den Karten, mittig ausgerichtet */}
+            {/* Statischer Carousel für Zertifikate - direkt unter den Karten, mittig ausgerichtet */}
             <div className="mt-12">
               <h3 className="serif-heading text-2xl font-bold text-gray-900 mb-6 text-center">
                 {t.igs_modal_title}
@@ -486,3 +482,4 @@ export default function AboutPage() {
     </>
   );
 }
+

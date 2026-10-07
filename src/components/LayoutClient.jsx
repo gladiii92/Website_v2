@@ -1,8 +1,11 @@
+'use client';
 import { createPageUrl } from "../utils";
 import { Button } from "../components/ui/Button";
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom"; // useLocation hier mitimportieren
-import { Phone, Mail, Menu, X } from "lucide-react"; // Neu: X für Close-Button
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+import { Phone, Mail, Menu, X } from "lucide-react";
 import CookieConsent from "./CookieConsent";
 
 const translations = {
@@ -48,30 +51,33 @@ const navigationItems = [
   { key: "contact", url: "Contact" }
 ];
 
-export default function Layout({ children, currentPageName }) {
-  const location = useLocation();
-  const [language, setLanguage] = useState("de");
+export default function LayoutClient({ children, lang }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [language, setLanguage] = useState(lang || "de");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const menuRef = useRef(null); // Neu: Ref für das mobile Menü
+  const menuRef = useRef(null);
 
-  const t = translations[language];
+  const t = translations[language] || translations.de;
 
-  // Store language in localStorage and update URL
   useEffect(() => {
-    const storedLang = localStorage.getItem('language') || 'de';
-    setLanguage(storedLang);
-  }, []);
+    const storedLang = localStorage.getItem('language');
+    if (storedLang && storedLang !== lang && translations[storedLang]) {
+      setLanguage(storedLang);
+      router.replace(`/${storedLang}`);
+    } else {
+      setLanguage(lang || "de");
+    }
+  }, [lang, router]);
 
   const changeLanguage = (newLang) => {
     setLanguage(newLang);
     localStorage.setItem('language', newLang);
     
-    // Update URL with language parameter
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.set('lang', newLang);
-    window.history.replaceState({}, '', currentUrl.toString());
+    // Replace current language prefix in URL
+    const newPath = pathname.replace(`/${language}`, `/${newLang}`);
+    router.push(newPath || `/${newLang}`);
     
-    // Trigger a custom event to notify other components
     window.dispatchEvent(new CustomEvent('languageChange', { detail: newLang }));
   };
 
@@ -112,16 +118,6 @@ export default function Layout({ children, currentPageName }) {
 
   const getPageTitle = () => {
     const baseTitle = t.company_name;
-    const pageNames = {
-      'Home': language === 'de' ? 'Startseite' : language === 'fr' ? 'Accueil' : 'Home',
-      'Collection': language === 'de' ? 'Kollektion' : 'Collection', 
-      'About': language === 'de' ? 'Über uns' : language === 'fr' ? 'À propos' : 'About Us',
-      'Contact': language === 'de' ? 'Kontakt' : 'Contact'
-    };
-    
-    if (currentPageName && currentPageName !== 'Home') {
-      return `${pageNames[currentPageName] || currentPageName} | ${baseTitle}`;
-    }
     return `${baseTitle} - ${t.tagline}`;
   };
 
@@ -213,8 +209,8 @@ export default function Layout({ children, currentPageName }) {
             <div className="flex items-center justify-between h-20">
               {/* Linker Block: Logo + Name */}
               <div className="flex items-center space-x-4 mx-auto lg:mx-0">
-                <Link to={createPageUrl("Home")} className="flex items-center space-x-3">
-                  <img src="/images/logo1.jpg" alt="NobleCutGems logo" className="h-10 lg:h-12" />
+                <Link href={createPageUrl("Home", language)} className="flex items-center space-x-3">
+                  <Image src="/images/logo1.jpg" width={48} height={48} alt="NobleCutGems logo" className="h-10 lg:h-12" />
                   {/* Für Mobile: Nur NobleCutGems, kleiner */}
                   <span className="serif-heading text-2xl font-bold lg:hidden">
                     {t.company_name}
@@ -237,9 +233,9 @@ export default function Layout({ children, currentPageName }) {
                   {navigationItems.map(item => (
                     <Link
                       key={item.key}
-                      to={createPageUrl(item.url)}
+                      href={createPageUrl(item.url, language)}
                       className={`nav-link text-sm font-medium tracking-wide uppercase transition-colors duration-300 ${
-                        location.pathname === createPageUrl(item.url)
+                        pathname === createPageUrl(item.url, language)
                           ? "active text-gray-900"
                           : "text-gray-600 hover:text-gray-900"
                       }`}
@@ -282,7 +278,7 @@ export default function Layout({ children, currentPageName }) {
                       {navigationItems.map((item) => (
                         <Link
                           key={item.key}
-                          to={createPageUrl(item.url)}
+                          href={createPageUrl(item.url, language)}
                           onClick={() => setMobileMenuOpen(false)}
                           className="text-lg font-medium text-gray-900 hover:text-primary-color transition-colors duration-300"
                         >
@@ -335,13 +331,13 @@ export default function Layout({ children, currentPageName }) {
               <div className="text-center md:text-left">
                 <h3 className="font-semibold mb-4" style={{color: 'var(--primary-color)'}}>Navigation</h3>
                 <div className="space-y-3">
-                  <Link to={createPageUrl("Impressum")} className="block text-gray-600 hover:text-white transition-colors duration-300">
+                  <Link href={createPageUrl("Impressum", language)} className="block text-gray-600 hover:text-white transition-colors duration-300">
                     Impressum
                   </Link>
-                  <Link to={createPageUrl("Datenschutz")} className="block text-gray-600 hover:text-white transition-colors duration-300">
+                  <Link href={createPageUrl("Datenschutz", language)} className="block text-gray-600 hover:text-white transition-colors duration-300">
                     Datenschutz
                   </Link>
-                  <Link to={createPageUrl("AGB")} className="block text-gray-600 hover:text-white transition-colors duration-300">
+                  <Link href={createPageUrl("AGB", language)} className="block text-gray-600 hover:text-white transition-colors duration-300">
                     AGB
                   </Link>
                 </div>
@@ -367,3 +363,4 @@ export default function Layout({ children, currentPageName }) {
     </>
   );
 }
+

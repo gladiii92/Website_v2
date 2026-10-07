@@ -1,3 +1,4 @@
+﻿'use client';
 import { useState, useEffect } from "react";
 
 export default function CookieConsent({ language = "de" }) {
@@ -80,3 +81,4 @@ export default function CookieConsent({ language = "de" }) {
     </div>
   );
 }
+

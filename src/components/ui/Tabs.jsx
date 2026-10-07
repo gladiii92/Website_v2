@@ -1,3 +1,4 @@
+﻿'use client';
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -79,3 +80,4 @@ export function TabsTrigger({ type, active, onClick }) {
     </button>
   );
 }
+

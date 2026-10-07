@@ -1,3 +1,4 @@
+﻿'use client';
 export function Sheet({ children }) {
   return <div>{children}</div>;
 }
@@ -10,3 +11,4 @@ export function SheetTrigger({ children }) {
 export function SheetClose({ children }) {
   return <div>{children}</div>;
 }
+
