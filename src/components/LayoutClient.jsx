@@ -5,7 +5,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import { Phone, Mail, Menu, X } from "lucide-react";
+import { Phone, Mail, Menu, X, Heart, Moon, Sun } from "lucide-react";
+import { useWishlist } from "../context/WishlistContext";
+import { useTheme } from "next-themes";
 import CookieConsent from "./CookieConsent";
 
 const translations = {
@@ -18,7 +20,9 @@ const translations = {
     email: "E-Mail",
     tagline: "Exquisite Edelsteine von außergewöhnlicher Qualität",
     seo_description: "NobleCutGems - Premium Edelsteine von außergewöhnlicher Qualität. Zertifizierte Diamanten, Rubine, Saphire und Smaragde aus aller Welt. Professionelle Beratung und IGS-Zertifizierung.",
-    company_name: "NobleCutGems"
+    company_name: "NobleCutGems",
+    wishlist: "Wishlist",
+    blog: "Journal"
   },
   en: {
     home: "Home",
@@ -29,7 +33,9 @@ const translations = {
     email: "Email",
     tagline: "Exquisite Gemstones of Extraordinary Quality",
     seo_description: "NobleCutGems - Premium gemstones of extraordinary quality. Certified diamonds, rubies, sapphires and emeralds from around the world. Professional consultation and IGS certification.",
-    company_name: "NobleCutGems"
+    company_name: "NobleCutGems",
+    wishlist: "Wishlist",
+    blog: "Journal"
   },
   fr: {
     home: "Accueil",
@@ -40,7 +46,9 @@ const translations = {
     email: "E-mail",
     tagline: "Pierres précieuses exquises d'une qualité extraordinaire",
     seo_description: "NobleCutGems - Pierres précieuses premium d'une qualité extraordinaire. Diamants, rubis, saphirs et émeraudes certifiés du monde entier. Consultation professionnelle et certification IGS.",
-    company_name: "NobleCutGems"
+    company_name: "NobleCutGems",
+    wishlist: "Wishlist",
+    blog: "Journal"
   }
 };
 
@@ -48,7 +56,8 @@ const navigationItems = [
   { key: "home", url: "Home" },
   { key: "collection", url: "Collection" },
   { key: "about", url: "About" },
-  { key: "contact", url: "Contact" }
+  { key: "contact", url: "Contact" },
+  { key: "blog", url: "blog" }
 ];
 
 export default function LayoutClient({ children, lang }) {
@@ -59,6 +68,11 @@ export default function LayoutClient({ children, lang }) {
   const menuRef = useRef(null);
 
   const t = translations[language] || translations.de;
+  const wishlistContext = useWishlist();
+  const wishlistCount = wishlistContext?.wishlist?.length || 0;
+  
+  
+  
 
   useEffect(() => {
     const storedLang = localStorage.getItem('language');
@@ -127,6 +141,8 @@ export default function LayoutClient({ children, lang }) {
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
         :root {
+          --bg-color: #fefefe;
+          --text-color: #1a1a1a;
           --primary-color: #1a73e8;
           --cta-color: #ff6f00;
           --success: #4caf50;
@@ -135,6 +151,8 @@ export default function LayoutClient({ children, lang }) {
           --champagne: #f7f3e9;
           --warm-gray: #8b7355;
         }
+
+        
         
         body {
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -243,7 +261,24 @@ export default function LayoutClient({ children, lang }) {
                       {t[item.key]}
                     </Link>
                   ))}
-                </nav>
+                  <Link
+                        href={`/${language}/wishlist`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-lg font-medium text-cta-color flex items-center gap-2"
+                      >
+                        <Heart className="w-5 h-5" />
+                        {t.wishlist} ({wishlistCount})
+                      </Link>
+                    </nav>
+                <Link href={`/${language}/wishlist`} className="relative text-gray-600 dark:text-gray-300 hover:text-cta-color transition-colors mr-4" title={t.wishlist}>
+                  <Heart className="w-6 h-6" />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-cta-color text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Link>
+                
                 <LanguageSelector />
               </div>
               

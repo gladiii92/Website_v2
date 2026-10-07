@@ -57,3 +57,16 @@
 
 }
 
+
+
+/* Shimmer effect for images */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.shimmer {
+  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+  animation: shimmer 1.5s infinite linear;
+}
+

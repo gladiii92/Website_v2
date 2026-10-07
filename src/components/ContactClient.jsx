@@ -465,19 +465,7 @@ export default function ContactPage({ lang }) {
               
 
               
-                <CardContent className="p-6">
-                  <h3 className="serif-heading text-lg font-bold text-gray-900 mb-1 text-center mb-2">
-                    {t.consultation_short}
-                  </h3>
-                  <Button 
-                    onClick={handleConsultationClick}
-                    variant="outline" 
-                    className="w-full border-blue-500 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300"
-                    disabled={isSubmitting}
-                  >
-                    {t.consultation_button}
-                  </Button>
-                </CardContent>
+
               
             </div>
           </div>

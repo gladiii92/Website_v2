@@ -2,7 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, Filter, ChevronDown, Eye } from 'lucide-react';
+import { Search, Filter, ChevronDown, Eye, Heart } from 'lucide-react';
+import { Root as SliderRootComponent, Track as SliderTrack, Range as SliderRange, Thumb as SliderThumb } from '@radix-ui/react-slider';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Badge } from '../components/ui/Badge';
@@ -288,13 +289,40 @@ const translations = {
   },
 };
 
+
+const SliderRoot = ({ value, onValueChange, min, max, step }) => (
+  <SliderRootComponent
+    className="relative flex items-center select-none touch-none w-full h-5"
+    value={value}
+    onValueChange={onValueChange}
+    max={max}
+    min={min}
+    step={step}
+  >
+    <SliderTrack className="bg-gray-200 relative grow rounded-full h-[3px]">
+      <SliderRange className="absolute bg-[#1a1a1a] rounded-full h-full" />
+    </SliderTrack>
+    <SliderThumb className="block w-5 h-5 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.1)] rounded-[10px] hover:bg-gray-50 focus:outline-none focus:shadow-[0_0_0_5px_rgba(26,26,26,0.1)] border-2 border-[#1a1a1a]" />
+    <SliderThumb className="block w-5 h-5 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.1)] rounded-[10px] hover:bg-gray-50 focus:outline-none focus:shadow-[0_0_0_5px_rgba(26,26,26,0.1)] border-2 border-[#1a1a1a]" />
+  </SliderRootComponent>
+);
+
 export default function CollectionClient({ lang }) {
   const [language, setLanguage] = useState(lang);
   const [loading, setLoading] = useState(true);
   const [stones, setStones] = useState([]);
   const [filteredStones, setFilteredStones] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({ type: 'all', priceRange: 'all', rarity: 'all' });
+  const [filters, setFilters] = useState({
+    type: 'all',
+    color: 'all',
+    cut: 'all',
+    rarity: 'all',
+    priceMin: 0,
+    priceMax: 5000,
+    caratMin: 0,
+    caratMax: 10
+  });
   const [sortBy, setSortBy] = useState('-createddate');
   const [shuffledStoneIds, setShuffledStoneIds] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
@@ -341,7 +369,7 @@ export default function CollectionClient({ lang }) {
     }
   };
 
-  const filterAndSortStones = () => {
+const filterAndSortStones = () => {
     let filtered = [...stones];
 
     if (searchTerm) {
@@ -357,27 +385,36 @@ export default function CollectionClient({ lang }) {
       filtered = filtered.filter(s => s.type?.toLowerCase() === filters.type.toLowerCase());
     }
 
-    if (filters.priceRange !== 'all') {
-      filtered = filtered.filter(s => {
-        const price = s.price_eur;
-        switch (filters.priceRange) {
-          case 'under5k':   return price < 50;
-          case '5k15k':     return price >= 50 && price < 500;
-          case '15k50k':    return price >= 500 && price < 5000;
-          case 'over50k':   return price >= 5000;
-          default:          return true;
-        }
-      });
+    if (filters.color !== 'all') {
+      filtered = filtered.filter(s => s.color === filters.color);
+    }
+
+    if (filters.cut !== 'all') {
+      filtered = filtered.filter(s => s.cut === filters.cut);
     }
 
     if (filters.rarity !== 'all') {
       filtered = filtered.filter(s => s.rarity_level === filters.rarity);
     }
 
+    filtered = filtered.filter(s => {
+      const price = s.price_eur || 0;
+      if (price < filters.priceMin) return false;
+      if (filters.priceMax < 5000 && price > filters.priceMax) return false;
+      return true;
+    });
+
+    filtered = filtered.filter(s => {
+      const carat = s.carat_weight || 0;
+      if (carat < filters.caratMin) return false;
+      if (filters.caratMax < 10 && carat > filters.caratMax) return false;
+      return true;
+    });
+
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'priceasc':  return a.price_eur - b.price_eur;
-        case 'pricedesc': return b.price_eur - a.price_eur;
+        case 'priceasc':  return (a.price_eur || 0) - (b.price_eur || 0);
+        case 'pricedesc': return (b.price_eur || 0) - (a.price_eur || 0);
         case 'carat':     return (b.carat_weight || 0) - (a.carat_weight || 0);
         default:          return new Date(b.created_date) - new Date(a.created_date);
       }
@@ -401,6 +438,35 @@ export default function CollectionClient({ lang }) {
     };
     return colors[rarity] || colors.select;
   };
+
+  const getCssColor = (colorName) => {
+    const colorMap = {
+      'gelb': '#fbbf24', 'yellow': '#fbbf24',
+      'blau': '#2563eb', 'blue': '#2563eb',
+      'grün': '#22c55e', 'green': '#22c55e',
+      'pink': '#ec4899', 'rot': '#ef4444', 'red': '#ef4444',
+      'lila': '#a855f7', 'purple': '#a855f7',
+      'lavendel': '#c084fc', 'lavender': '#c084fc',
+      'orange': '#f97316', 'champagner': '#fcd34d', 'champagne': '#fcd34d',
+      'weiß': '#ffffff', 'white': '#ffffff',
+      'schwarz': '#171717', 'black': '#171717',
+      'grau': '#737373', 'gray': '#737373',
+      'braun': '#92400e', 'brown': '#92400e',
+      'teal': '#14b8a6', 'cyan': '#06b6d4'
+    };
+    if (!colorName) return '#e5e7eb';
+    const lower = colorName.toLowerCase();
+    
+    if (lower.includes('grün') && lower.includes('blau')) return 'linear-gradient(135deg, #22c55e, #2563eb)';
+    if (lower.includes('green') && lower.includes('blue')) return 'linear-gradient(135deg, #22c55e, #2563eb)';
+    if (lower.includes('orange') && lower.includes('gelb')) return 'linear-gradient(135deg, #f97316, #fbbf24)';
+    if (lower.includes('orange') && lower.includes('yellow')) return 'linear-gradient(135deg, #f97316, #fbbf24)';
+    if (lower.includes('bi-color')) return 'linear-gradient(135deg, #ec4899, #22c55e)';
+    
+    const matchedKey = Object.keys(colorMap).find(k => lower.includes(k));
+    return matchedKey ? colorMap[matchedKey] : '#e5e7eb';
+  };
+
 
   // Steine die ohne Filter angezeigt werden (gemischt)
   const stonesToDisplay =
@@ -434,9 +500,16 @@ export default function CollectionClient({ lang }) {
 
   const uniqueTypes = [...new Set(stones.map(s => s.type?.toLowerCase()).filter(Boolean))];
 
+  
+  const availableTypes = Array.from(new Set(stones.map(s => s.type))).filter(Boolean);
+  const typeStones = filters.type === 'all' ? stones : stones.filter(s => s.type?.toLowerCase() === filters.type.toLowerCase());
+  const availableColors = Array.from(new Set(typeStones.map(s => s.color))).filter(Boolean).sort();
+  const availableCuts = Array.from(new Set(typeStones.map(s => s.cut))).filter(Boolean).sort();
+  const availableRarities = Array.from(new Set(typeStones.map(s => s.rarity_level))).filter(Boolean).sort();
+
   const resetFilters = () => {
     setSearchTerm('');
-    setFilters({ type: 'all', priceRange: 'all', rarity: 'all' });
+    setFilters({ type: 'all', color: 'all', cut: 'all', rarity: 'all', priceMin: 0, priceMax: 5000, caratMin: 0, caratMax: 10 });
     setSortBy('-createddate');
   };
 
@@ -476,90 +549,223 @@ export default function CollectionClient({ lang }) {
           </div>
 
           {/* Filter-Leiste */}
-          <div className="bg-gray-50 rounded-lg p-4 mb-12 shadow-sm">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              {/* Suche */}
-              <div className="relative flex-1 max-w-md w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  placeholder={t.searchplaceholder}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 border-gray-300 focus:border-blue-500 transition-colors"
-                />
+          <div className="bg-white rounded-xl p-6 mb-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
+            <div className="flex flex-col gap-6">
+              
+              {/* Top Row: Search and Type */}
+              <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div className="relative flex-1 max-w-lg w-full">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Input
+                    placeholder={t.searchplaceholder}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-12 py-6 bg-gray-50 border-transparent focus:bg-white focus:border-blue-500 rounded-full w-full text-base shadow-sm"
+                  />
+                </div>
+                <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide w-full md:w-auto">
+                  <button
+                    onClick={() => setFilters({ ...filters, type: 'all', color: 'all', cut: 'all' })}
+                    className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                      filters.type === 'all'
+                        ? 'bg-[#1a1a1a] text-white shadow-md'
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    {t.alltypes}
+                  </button>
+                  {availableTypes.map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setFilters({ ...filters, type, color: 'all', cut: 'all' })}
+                      className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                        filters.type === type
+                          ? 'bg-[#1a1a1a] text-white shadow-md'
+                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    {getTranslatedType(type)}
+                  </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Filter */}
-              <div className="flex flex-wrap items-center gap-4 justify-center md:justify-end">
-                {/* Typ */}
-                <Select value={filters.type} onValueChange={(v) => setFilters({ ...filters, type: v })}>
-                  <SelectTrigger className="w-40 border-gray-300 hover:border-blue-500 transition-colors">
-                    <SelectValue placeholder={t.filtertype} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t.alltypes}</SelectItem>
-                    {uniqueTypes.map((type) => (
-                      <SelectItem key={type} value={type}>{getTranslatedType(type)}</SelectItem>
+              <div className="h-px bg-gray-100 w-full" />
+
+              {/* Bottom Section: Detailed Filters */}
+              <div className="flex flex-col gap-8 w-full mt-2">
+                
+                {/* Row 1: Colors */}
+                <div className="flex flex-col gap-3 w-full">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Farbe</span>
+                  <div className="flex flex-wrap gap-2">
+                    {availableColors.map(c => (
+                      <button
+                        key={c}
+                        onClick={() => setFilters({ ...filters, color: filters.color === c ? 'all' : c })}
+                        className={`w-8 h-8 rounded-full border-2 shadow-sm transition-all ${filters.color === c ? 'border-[#1a1a1a] scale-110 ring-2 ring-[#1a1a1a]/20' : 'border-white hover:scale-110'}`}
+                        style={{ background: getCssColor(c) }}
+                        title={c}
+                      />
                     ))}
-                  </SelectContent>
-                </Select>
+                    {availableColors.length === 0 && <span className="text-sm text-gray-400 py-1">N/A</span>}
+                  </div>
+                </div>
 
-                {/* Preis */}
-                <Select value={filters.priceRange} onValueChange={(v) => setFilters({ ...filters, priceRange: v })}>
-                  <SelectTrigger className="w-40 border-gray-300 hover:border-blue-500 transition-colors">
-                    <SelectValue placeholder={t.filterprice} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t.allprices}</SelectItem>
-                    <SelectItem value="under5k">{t.priceunder5k}</SelectItem>
-                    <SelectItem value="5k15k">{t.price5k15k}</SelectItem>
-                    <SelectItem value="15k50k">{t.price15k50k}</SelectItem>
-                    <SelectItem value="over50k">{t.priceover50k}</SelectItem>
-                  </SelectContent>
-                </Select>
+                {/* Row 2: Pill Filters */}
+                <div className="flex flex-wrap lg:flex-nowrap gap-6 w-full">
+                  
+                  <div className="flex flex-col gap-2 w-full md:flex-1">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Schliff</span>
+                    <div className="flex gap-2 flex-wrap">
+                      <button
+                        onClick={() => setFilters({ ...filters, cut: 'all' })}
+                        className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                          filters.cut === 'all'
+                            ? 'bg-[#1a1a1a] text-white shadow-md'
+                            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        Alle Schliffe
+                      </button>
+                      {availableCuts.map(c => (
+                        <button
+                          key={c}
+                          onClick={() => setFilters({ ...filters, cut: c })}
+                          className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                            filters.cut === c
+                              ? 'bg-[#1a1a1a] text-white shadow-md'
+                              : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {getTranslatedCut(c)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                {/* Seltenheit */}
-                <Select value={filters.rarity} onValueChange={(v) => setFilters({ ...filters, rarity: v })}>
-                  <SelectTrigger className="w-40 border-gray-300 hover:border-blue-500 transition-colors">
-                    <SelectValue placeholder={t.filterrarity} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t.allrarity}</SelectItem>
-                    <SelectItem value="exceptional">{getTranslatedRarity('exceptional')}</SelectItem>
-                    <SelectItem value="rare">{getTranslatedRarity('rare')}</SelectItem>
-                    <SelectItem value="premium">{getTranslatedRarity('premium')}</SelectItem>
-                    <SelectItem value="select">{getTranslatedRarity('select')}</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <div className="flex flex-col gap-2 w-full md:flex-1">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Seltenheit</span>
+                    <div className="flex gap-2 flex-wrap">
+                      <button
+                        onClick={() => setFilters({ ...filters, rarity: 'all' })}
+                        className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                          filters.rarity === 'all'
+                            ? 'bg-[#1a1a1a] text-white shadow-md'
+                            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {t.allrarity || 'Alle'}
+                      </button>
+                      {availableRarities.map(r => (
+                        <button
+                          key={r}
+                          onClick={() => setFilters({ ...filters, rarity: r })}
+                          className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                            filters.rarity === r
+                              ? 'bg-[#1a1a1a] text-white shadow-md'
+                              : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {getTranslatedRarity(r)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                {/* Sortierung */}
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-40 border-gray-300 hover:border-blue-500 transition-colors">
-                    <SelectValue placeholder={t.sortby} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="-createddate">{t.sortnewest}</SelectItem>
-                    <SelectItem value="priceasc">{t.sortpricelow}</SelectItem>
-                    <SelectItem value="pricedesc">{t.sortpricehigh}</SelectItem>
-                    <SelectItem value="carat">{t.sortcarat}</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <div className="flex flex-col gap-2 w-full md:flex-1">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sortierung</span>
+                    <div className="flex gap-2 flex-wrap">
+                      <button
+                        onClick={() => setSortBy('-createddate')}
+                        className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                          sortBy === '-createddate'
+                            ? 'bg-[#1a1a1a] text-white shadow-md'
+                            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {t.sortnewest}
+                      </button>
+                      <button
+                        onClick={() => setSortBy('priceasc')}
+                        className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                          sortBy === 'priceasc'
+                            ? 'bg-[#1a1a1a] text-white shadow-md'
+                            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {t.sortpricelow}
+                      </button>
+                      <button
+                        onClick={() => setSortBy('pricedesc')}
+                        className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                          sortBy === 'pricedesc'
+                            ? 'bg-[#1a1a1a] text-white shadow-md'
+                            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {t.sortpricehigh}
+                      </button>
+                      <button
+                        onClick={() => setSortBy('carat')}
+                        className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                          sortBy === 'carat'
+                            ? 'bg-[#1a1a1a] text-white shadow-md'
+                            : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {t.sortcarat || 'Karat'}
+                      </button>
+                    </div>
+                  </div>
 
-                <Button
-                  variant="outline"
-                  onClick={resetFilters}
-                  className="border-gray-300 hover:border-blue-500 transition-colors"
-                >
-                  {t.resetfilters}
-                </Button>
+                </div>
+
+                {/* Row 3: Sliders and Reset */}
+                <div className="flex flex-col md:flex-row gap-8 justify-between items-end pt-6 border-t border-gray-100">
+                  <div className="flex flex-col sm:flex-row gap-8 w-full md:w-2/3">
+                    <div className="w-full">
+                      <div className="flex justify-between text-sm text-gray-500 mb-4">
+                        <span className="font-medium uppercase tracking-wider text-xs">{t.filterprice || 'Preis'}</span>
+                        <span className="font-semibold text-gray-900">{filters.priceMin}€ - {filters.priceMax >= 5000 ? '5.000€+' : `${filters.priceMax}€`}</span>
+                      </div>
+                      <SliderRoot 
+                        value={[filters.priceMin, filters.priceMax]} 
+                        onValueChange={([min, max]) => setFilters({ ...filters, priceMin: min, priceMax: max })} 
+                        min={0} max={5000} step={100} 
+                      />
+                    </div>
+                    <div className="w-full">
+                      <div className="flex justify-between text-sm text-gray-500 mb-4">
+                        <span className="font-medium uppercase tracking-wider text-xs">{t.sortcarat || 'Karat'}</span>
+                        <span className="font-semibold text-gray-900">{filters.caratMin}ct - {filters.caratMax >= 10 ? '10ct+' : `${filters.caratMax}ct`}</span>
+                      </div>
+                      <SliderRoot 
+                        value={[filters.caratMin, filters.caratMax]} 
+                        onValueChange={([min, max]) => setFilters({ ...filters, caratMin: min, caratMax: max })} 
+                        min={0} max={10} step={0.1} 
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full md:w-auto flex justify-end">
+                    <Button
+                      variant="ghost"
+                      onClick={resetFilters}
+                      className="text-gray-500 hover:text-gray-900 px-4 py-2 h-[38px]"
+                    >
+                      {t.resetfilters}
+                    </Button>
+                  </div>
+                </div>
+
               </div>
             </div>
+          </div>
 
-            {/* Anzahl */}
+          {/* Anzahl */}
             <div className="mt-4 text-sm text-gray-600 text-center md:text-left">
               {filteredStones.length} {t.stonesfound}
             </div>
-          </div>
 
           {/* Grid */}
           {stonesToDisplay.length === 0 ? (

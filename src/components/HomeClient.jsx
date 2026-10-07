@@ -3,10 +3,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles, Crown, Shield, Award } from "lucide-react";
+import { ArrowRight, Sparkles, Crown, Shield, Award, Heart } from "lucide-react";
 import { Button } from "./ui/Button";
 import { Badge } from "./ui/Badge";
 import { gemstones } from "../data/Gemstones";
+import { useWishlist } from "../context/WishlistContext";
 
 const translations = {
   de: {
@@ -239,6 +240,7 @@ export default function HomeClient({ lang }) {
   }, [featuredStones]);
 
   const t = translations[lang] || translations.de;
+  const wishlistContext = useWishlist();
 
   function shuffleArray(array) {
     const newArr = [...array];
@@ -330,11 +332,22 @@ export default function HomeClient({ lang }) {
           />
         )}
         <div className={`absolute inset-0 bg-black/0 ${!isMobile ? "group-hover:bg-black/20 transition-colors duration-300" : ""}`}></div>
+        <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
         
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
           <Badge className={`${getRarityColor(stone.rarity_level)} border backdrop-blur-sm`}>
             {getTranslatedRarity(stone.rarity_level)}
           </Badge>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              wishlistContext?.toggleWishlist(stone.id);
+            }}
+            className={`p-2 rounded-full backdrop-blur-md shadow-sm transition-all duration-300 hover:scale-110 z-10 ${wishlistContext?.isInWishlist(stone.id) ? "bg-white text-red-500" : "bg-white/70 text-gray-700 hover:bg-white hover:text-red-500"}`}
+          >
+            <Heart className="w-5 h-5" fill={wishlistContext?.isInWishlist(stone.id) ? "currentColor" : "none"} />
+          </button>
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/10"></div>
@@ -494,13 +507,13 @@ export default function HomeClient({ lang }) {
         </div>
       </section>
 
-      <section className="py-24 bg-primary-dark text-white">
+      <section className="py-24 bg-primary-dark text-pearl-white">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="serif-heading text-3xl md:text-4xl font-bold mb-6">
-            {lang === 'de' ? 'Bereit f•r Ihre pers•nliche Beratung?' : lang === 'fr' ? 'Pr•t pour votre consultation personnelle ?' : 'Ready for your personal consultation?'}
+            {lang === 'de' ? 'Bereit für Ihre persönliche Beratung?' : lang === 'fr' ? 'Prêt pour votre consultation personnelle ?' : 'Ready for your personal consultation?'}
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            {lang === 'de' ? 'Lassen Sie sich von unseren zertifizierten Experten bei der Auswahl Ihres perfekten Edelsteins beraten.' : lang === 'fr' ? 'Laissez nos experts certifi•s vous conseiller dans le choix de votre pierre pr•cieuse parfaite.' : 'Let our certified experts advise you on choosing your perfect gemstone.'}
+            {lang === 'de' ? 'Lassen Sie sich von unseren zertifizierten Experten bei der Auswahl Ihres perfekten Edelsteins beraten.' : lang === 'fr' ? 'Laissez nos experts certifiés vous conseiller dans le choix de votre pierre précieuse parfaite.' : 'Let our certified experts advise you on choosing your perfect gemstone.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link href={`/${lang}/contact`}>

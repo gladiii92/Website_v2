@@ -1,5 +1,6 @@
-﻿import { notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import CollectionClient from '@/components/CollectionClient';
+import React from 'react';
 
 const translations = {
   de: {
@@ -61,7 +62,9 @@ export default async function CollectionPage({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <CollectionClient lang={lang} />
+      <React.Suspense fallback={<div className="pt-32 text-center">Loading Collection...</div>}>
+        <CollectionClient lang={lang} />
+      </React.Suspense>
     </>
   );
 }

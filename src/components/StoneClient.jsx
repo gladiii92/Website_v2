@@ -5,6 +5,8 @@ import { useParams, useRouter, usePathname } from "next/navigation";
 import { createPageUrl } from "../utils";
 import Image from "next/image";
 import { gemstones } from "../data/Gemstones";
+import { useWishlist } from "../context/WishlistContext";
+import { Heart } from "lucide-react";
 import { ArrowLeft, Play, Pause, Share2, Award, Shield, Sparkles, ChevronLeft, ChevronRight, Info } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
@@ -498,6 +500,7 @@ export default function StoneClient({ lang, slug }) {
   const [language, setLanguage] = useState("de");
   const [stone, setStone] = useState(null);
   const [loading, setLoading] = useState(true);
+  const wishlistContext = useWishlist();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [showInquiryDialog, setShowInquiryDialog] = useState(false);
@@ -776,6 +779,17 @@ export default function StoneClient({ lang, slug }) {
                 )}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/10"></div>
 
+                {/* Wishlist Button */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    wishlistContext?.toggleWishlist(stone.id);
+                  }}
+                  className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 z-10 ${wishlistContext?.isInWishlist(stone.id) ? "bg-white text-red-500" : "bg-white/70 text-gray-700 hover:bg-white hover:text-red-500"}`}
+                >
+                  <Heart className="w-6 h-6" fill={wishlistContext?.isInWishlist(stone.id) ? "currentColor" : "none"} />
+                </button>
+
                 {/* Navigation arrows */}
                 {allMedia.length > 1 && (
                   <>
@@ -1023,3 +1037,9 @@ export default function StoneClient({ lang, slug }) {
     </>
   );
 }
+
+
+
+
+
+
