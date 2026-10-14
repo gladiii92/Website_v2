@@ -1,5 +1,5 @@
 {
-  "name": "dein-projektname",
+  "name": "noblecutgems-platform",
   "version": "1.0.0",
   "private": true,
   "homepage": "https://noblecutgems.com",
@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d out -t true"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Phone, Mail, MapPin, Clock, Send, Award } from "lucide-react";
+import { gemstones } from "../data/Gemstones";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { Textarea } from "../components/ui/Textarea";
@@ -135,6 +137,9 @@ const translations = {
 };
 
 export default function ContactPage({ lang }) {
+  const searchParams = useSearchParams();
+  const stonesParam = searchParams.get('stones');
+
   const [language, setLanguage] = useState(lang || "de");
   const [inquirySent, setInquirySent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -142,12 +147,34 @@ export default function ContactPage({ lang }) {
     full_name: "",
     email: "",
     phone: "",
-    inquiry_type: "",
+    inquiry_type: stonesParam ? "custom" : "",
     budget_range: "",
     message: ""
   });
 
   const t = translations[language];
+
+  // Vorbefüllung bei Übernahme aus Wishlist (?stones=1,2,...)
+  useEffect(() => {
+    if (stonesParam) {
+      const stoneIds = stonesParam.split(',').map(id => parseInt(id, 10)).filter(Boolean);
+      const selectedStones = gemstones.filter(s => stoneIds.includes(s.id));
+      if (selectedStones.length > 0) {
+        const stoneList = selectedStones.map(s => `- ${s.name} (${s.carat_weight}ct, ${s.price_eur} €)`).join('\n');
+        const initialMsg = language === 'en'
+          ? `Hello NobleCutGems Team,\n\nI am interested in the following gemstone(s) from my selection:\n\n${stoneList}\n\nPlease contact me regarding availability, certification and shipping.`
+          : language === 'fr'
+          ? `Bonjour l'équipe NobleCutGems,\n\nJe suis intéressé(e) par la/les pierre(s) précieuse(s) suivante(s) de ma sélection :\n\n${stoneList}\n\nMerci de me contacter concernant la disponibilité et l'expédition.`
+          : `Hallo NobleCutGems-Team,\n\nich interessiere mich für folgende(n) Edelstein(e) aus meiner Auswahl:\n\n${stoneList}\n\nBitte kontaktieren Sie mich bezüglich Verfügbarkeit und Abwicklung.`;
+
+        setFormData(prev => ({
+          ...prev,
+          inquiry_type: 'custom',
+          message: initialMsg
+        }));
+      }
+    }
+  }, [stonesParam, language]);
 
   // Listen for language changes and initialize from localStorage
   useEffect(() => {

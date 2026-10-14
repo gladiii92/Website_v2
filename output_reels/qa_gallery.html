@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NobleCutGems • Visual QA Reel Inspection Gallery</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #090c10;
+            color: #f0f6fc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 30px 20px;
+        }
+        .header {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 40px;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            color: #fcd34d;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            color: #8b949e;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+        .card-header h2 {
+            font-size: 1.4rem;
+            color: #ffffff;
+        }
+        .card-header .sub {
+            display: inline-block;
+            margin-top: 4px;
+            color: #34d399;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .btn-dl {
+            background: #238636;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .btn-dl:hover {
+            background: #2ea043;
+        }
+        .preview-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 1024px) {
+            .preview-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        .video-preview-box {
+            background: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .video-preview-box video {
+            width: 100%;
+            max-height: 480px;
+            border-radius: 6px;
+            background: black;
+        }
+        .frames-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .frame-col {
+            background: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .badge {
+            background: #30363d;
+            color: #fcd34d;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 100px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        .badge-video {
+            background: #1f6feb;
+            color: #ffffff;
+        }
+        .frame-col img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            border: 1px solid #30363d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NobleCutGems Luxury Reel QA Gallery</h1>
+        <p>Human-eye visual inspection protocol: Verify typography, smooth dissolves, ambient music grading, and safe margins before publishing.</p>
+    </div>
+    <div class="container">
+        
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2>#1 1.43ct Ceylon Yellow Sapphire</h2>
+                    <span class="sub">SAPPHIRE • FANCY • €850</span>
+                </div>
+                <div class="actions">
+                    <a href="gelber-saphir_luxury_reel.mp4" download class="btn-dl">⬇ Download Reel (MP4 + Music)</a>
+                </div>
+            </div>
+            <div class="preview-layout">
+                <div class="video-preview-box">
+                    <span class="badge badge-video">Live Video Player (Mit Musik)</span>
+                    <video src="gelber-saphir_luxury_reel.mp4" controls preload="metadata" playsinline></video>
+                </div>
+                <div class="frames-grid">
+                    
+            <div class="frame-col">
+                <span class="badge">Phase 1: Massive Hook (2s)</span>
+                <img src="qa_frames/gelber-saphir/frame_1_hook.jpg" alt="Phase 1: Massive Hook (2s)" loading="lazy" />
+            </div>
+            
+            <div class="frame-col">
+                <span class="badge">Phase 2: Rarity Specs (6s)</span>
+                <img src="qa_frames/gelber-saphir/frame_2_proof.jpg" alt="Phase 2: Rarity Specs (6s)" loading="lazy" />
+            </div>
+            
+            <div class="frame-col">
+                <span class="badge">Phase 3: Direct Offer (10s)</span>
+                <img src="qa_frames/gelber-saphir/frame_3_cta.jpg" alt="Phase 3: Direct Offer (10s)" loading="lazy" />
+            </div>
+            
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2>#2 4.57ct Tanzanian Blue Spinel</h2>
+                    <span class="sub">SPINEL • CUSHION • €1750</span>
+                </div>
+                <div class="actions">
+                    <a href="blauer-spinell_luxury_reel.mp4" download class="btn-dl">⬇ Download Reel (MP4 + Music)</a>
+                </div>
+            </div>
+            <div class="preview-layout">
+                <div class="video-preview-box">
+                    <span class="badge badge-video">Live Video Player (Mit Musik)</span>
+                    <video src="blauer-spinell_luxury_reel.mp4" controls preload="metadata" playsinline></video>
+                </div>
+                <div class="frames-grid">
+                    
+            <div class="frame-col">
+                <span class="badge">Phase 1: Massive Hook (2s)</span>
+                <img src="qa_frames/blauer-spinell/frame_1_hook.jpg" alt="Phase 1: Massive Hook (2s)" loading="lazy" />
+            </div>
+            
+            <div class="frame-col">
+                <span class="badge">Phase 2: Rarity Specs (6s)</span>
+                <img src="qa_frames/blauer-spinell/frame_2_proof.jpg" alt="Phase 2: Rarity Specs (6s)" loading="lazy" />
+            </div>
+            
+            <div class="frame-col">
+                <span class="badge">Phase 3: Direct Offer (10s)</span>
+                <img src="qa_frames/blauer-spinell/frame_3_cta.jpg" alt="Phase 3: Direct Offer (10s)" loading="lazy" />
+            </div>
+            
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

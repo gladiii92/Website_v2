@@ -75,14 +75,11 @@ export default function LayoutClient({ children, lang }) {
   
 
   useEffect(() => {
-    const storedLang = localStorage.getItem('language');
-    if (storedLang && storedLang !== lang && translations[storedLang]) {
-      setLanguage(storedLang);
-      router.replace(`/${storedLang}`);
-    } else {
-      setLanguage(lang || "de");
+    if (lang && translations[lang]) {
+      setLanguage(lang);
+      localStorage.setItem('language', lang);
     }
-  }, [lang, router]);
+  }, [lang]);
 
   const changeLanguage = (newLang) => {
     setLanguage(newLang);

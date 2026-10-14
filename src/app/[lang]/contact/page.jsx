@@ -1,4 +1,4 @@
-﻿import ContactClient from '@/components/ContactClient';
+import ContactClient from '@/components/ContactClient';
 
 export async function generateMetadata({ params }) {
   const titles = {
@@ -31,6 +31,12 @@ export async function generateMetadata({ params }) {
     title,
     alternates: {
       canonical: `https://www.noblecutgems.com/${(await params).lang}/contact`,
+      languages: {
+        de: 'https://www.noblecutgems.com/de/contact',
+        en: 'https://www.noblecutgems.com/en/contact',
+        fr: 'https://www.noblecutgems.com/fr/contact',
+        'x-default': 'https://www.noblecutgems.com/en/contact',
+      },
     },
     openGraph: {
       title,
@@ -40,7 +46,13 @@ export async function generateMetadata({ params }) {
   };
 }
 
+import React, { Suspense } from 'react';
+
 export default async function Page({ params }) {
-  return <ContactClient lang={(await params).lang} />;
+  return (
+    <Suspense fallback={<div className="min-h-screen py-24" />}>
+      <ContactClient lang={(await params).lang} />
+    </Suspense>
+  );
 }
 

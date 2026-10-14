@@ -27,6 +27,12 @@ export async function generateMetadata({ params }) {
     description: t.collectionsubtitle,
     alternates: {
       canonical: `https://www.noblecutgems.com/${lang}/collection`,
+      languages: {
+        de: 'https://www.noblecutgems.com/de/collection',
+        en: 'https://www.noblecutgems.com/en/collection',
+        fr: 'https://www.noblecutgems.com/fr/collection',
+        'x-default': 'https://www.noblecutgems.com/en/collection',
+      },
     },
     openGraph: {
       title: t.collectiontitle,

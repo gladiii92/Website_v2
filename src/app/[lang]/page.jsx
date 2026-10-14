@@ -1,4 +1,4 @@
-﻿import { notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import HomeClient from '@/components/HomeClient';
 
 export function generateStaticParams() {
@@ -30,6 +30,12 @@ export async function generateMetadata({ params }) {
     description: t.description,
     alternates: {
       canonical: `https://www.noblecutgems.com/${lang}`,
+      languages: {
+        de: 'https://www.noblecutgems.com/de',
+        en: 'https://www.noblecutgems.com/en',
+        fr: 'https://www.noblecutgems.com/fr',
+        'x-default': 'https://www.noblecutgems.com/en',
+      },
     },
     openGraph: {
       title: t.title,

@@ -36,6 +36,12 @@ export async function generateMetadata({ params }) {
     description,
     alternates: {
       canonical: `https://www.noblecutgems.com/${(await params).lang}/about`,
+      languages: {
+        de: 'https://www.noblecutgems.com/de/about',
+        en: 'https://www.noblecutgems.com/en/about',
+        fr: 'https://www.noblecutgems.com/fr/about',
+        'x-default': 'https://www.noblecutgems.com/en/about',
+      },
     },
     openGraph: {
       title,

@@ -2,19 +2,69 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getSortedPostsData } from '@/lib/blog';
 
+const blogTitles = {
+  de: {
+    title: 'Edelstein Lexikon & Blog | NobleCutGems',
+    heading: 'Edelstein Lexikon & Blog',
+    subheading: 'Wissen und Insights direkt von unseren gemmologischen Experten',
+  },
+  en: {
+    title: 'Gemstone Journal & Guide | NobleCutGems',
+    heading: 'Gemstone Journal & Guide',
+    subheading: 'Expert insights, origin guides and untreated gemstone knowledge',
+  },
+  fr: {
+    title: 'Guide & Blog des Pierres Précieuses | NobleCutGems',
+    heading: 'Guide & Blog des Pierres Précieuses',
+    subheading: 'Savoir et insights rédigés par nos experts gemmologues',
+  },
+};
+
+export function generateStaticParams() {
+  return [{ lang: 'de' }, { lang: 'en' }, { lang: 'fr' }];
+}
+
+export async function generateMetadata({ params }) {
+  const lang = (await params).lang;
+  const t = blogTitles[lang] || blogTitles.de;
+
+  return {
+    title: t.title,
+    description: t.subheading,
+    alternates: {
+      canonical: `https://www.noblecutgems.com/${lang}/blog`,
+      languages: {
+        de: 'https://www.noblecutgems.com/de/blog',
+        en: 'https://www.noblecutgems.com/en/blog',
+        fr: 'https://www.noblecutgems.com/fr/blog',
+        'x-default': 'https://www.noblecutgems.com/en/blog',
+      },
+    },
+    openGraph: {
+      title: t.title,
+      description: t.subheading,
+      url: `https://www.noblecutgems.com/${lang}/blog`,
+      siteName: 'NobleCutGems',
+      locale: lang,
+      type: 'website',
+    },
+  };
+}
+
 export default async function BlogIndex({ params }) {
   const lang = (await params).lang;
   const posts = getSortedPostsData(lang);
+  const t = blogTitles[lang] || blogTitles.de;
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-900 py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="serif-heading text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Edelstein Lexikon & Blog
+            {t.heading}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            Wissen und Insights direkt von unseren Experten
+            {t.subheading}
           </p>
           <div className="w-24 h-1 mx-auto" style={{ backgroundColor: 'var(--primary-color)' }} />
         </div>
@@ -45,4 +95,3 @@ export default async function BlogIndex({ params }) {
     </main>
   );
 }
-

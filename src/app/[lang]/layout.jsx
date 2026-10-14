@@ -12,6 +12,7 @@ export default async function RootLayout({ children, params }) {
   return (
     <html lang={(await params).lang} suppressHydrationWarning>
       <head>
+        <meta name="google-site-verification" content="F_Vqxg18iomkWxgGhN8WTgRBDkvQrVkUVMxoDI5m81M" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
       </head>

@@ -49,6 +49,13 @@ const translations = {
     add_wishlist: "Zur Wunschliste hinzufügen",
     stone_not_found: "Edelstein nicht gefunden",
     loading: "Wird geladen...",
+    contact_form_title: "Edelstein anfragen",
+    inquire_now: "Unverbindlich anfragen",
+    whatsapp_inquiry: "WhatsApp Beratung",
+    link_copied: "Link kopiert!",
+    guarantee_authentic: "100% Unbehandelt & Natürlich",
+    guarantee_inspection: "30 Tage Rückgaberecht zur Prüfung",
+    guarantee_shipping: "Vollversicherter Expressversand",
     // Edelstein-Typen
     types: {
       diamond: "Diamant",
@@ -204,6 +211,13 @@ const translations = {
     add_wishlist: "Add to Wishlist",
     stone_not_found: "Gemstone not found",
     loading: "Loading...",
+    contact_form_title: "Inquire about this Gemstone",
+    inquire_now: "Inquire / Reserve",
+    whatsapp_inquiry: "WhatsApp Consultation",
+    link_copied: "Link copied!",
+    guarantee_authentic: "100% Natural & Untreated",
+    guarantee_inspection: "30-Day Inspection Period",
+    guarantee_shipping: "Fully Insured Express Shipping",
 
     // Gemstone types in English
     types: {
@@ -361,6 +375,13 @@ const translations = {
     add_wishlist: "Ajouter aux Favoris",
     stone_not_found: "Pierre précieuse non trouvée",
     loading: "Chargement...",
+    contact_form_title: "Demande sur cette Pierre",
+    inquire_now: "Demander / Réserver",
+    whatsapp_inquiry: "Conseil WhatsApp",
+    link_copied: "Lien copié !",
+    guarantee_authentic: "100% Naturel & Non Traité",
+    guarantee_inspection: "Inspection 30 Jours Garantie",
+    guarantee_shipping: "Livraison Express Entièrement Assurée",
     // Gemstone types in French
     types: {      
       diamond: "Diamant",
@@ -511,6 +532,7 @@ export default function StoneClient({ lang, slug }) {
     phone: "",
     message: ""
   });
+  const [copyFeedback, setCopyFeedback] = useState(false);
   const [thumbnails, setThumbnails] = useState([]);
   const handlers = useSwipeable({
     onSwipedLeft: () => setCurrentIndex((prev) => (prev + 1) % allMedia.length),
@@ -594,34 +616,23 @@ export default function StoneClient({ lang, slug }) {
   };
 
   useEffect(() => {
-    // Neu: Preload-Funktion
-    const preloadMedia = () => {
+    // Sicheres Preloading ausschließlich für statische Bilder
+    if (stone && allMedia.length > 0) {
       allMedia.forEach((media) => {
-        if (media.endsWith('.mp4')) {
-          const video = document.createElement('video');
-          video.src = media;
-          video.preload = 'auto'; // L•dt das Video im Voraus
-          video.style.display = 'none'; // Unsichtbar
-          document.body.appendChild(video); // F•gt zum DOM hinzu, um zu laden
-          // Entferne nach Laden, um Speicher zu sparen (optional)
-          video.onloadeddata = () => document.body.removeChild(video);
-        } else {
+        if (!media.endsWith('.mp4')) {
           const img = new window.Image();
-          img.src = media; // L•dt Bilder im Voraus
+          img.src = media;
         }
       });
-    };
-
-    if (stone && allMedia.length > 0) {
-      preloadMedia(); // Starte Preloading nach Laden der Stone-Daten
     }
   }, [stone, allMedia]);
 
   const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Anfrage zu ${stone.name}`);
+    const stoneTitle = getTranslatedStoneName(stone.id);
+    const subject = encodeURIComponent(`Anfrage zu ${stoneTitle} (ID: ${stone.id})`);
     const body = encodeURIComponent(
-      `Name: ${inquiryForm.full_name}\nE-Mail: ${inquiryForm.email}\nTelefon: ${inquiryForm.phone}\n\n${inquiryForm.message}`
+      `Name: ${inquiryForm.full_name}\nE-Mail: ${inquiryForm.email}\nTelefon: ${inquiryForm.phone}\n\nStein: ${stoneTitle} (${stone.carat_weight}ct, ${stone.price_eur} €)\n\nNachricht:\n${inquiryForm.message}`
     );
     window.location.href = `mailto:info@noblecutgems.com?subject=${subject}&body=${body}`;
     setInquirySent(true);
@@ -633,9 +644,10 @@ export default function StoneClient({ lang, slug }) {
   };
 
   const handleShare = async () => {
+    const stoneTitle = getTranslatedStoneName(stone.id);
     const shareData = {
-      title: stone.stone_names,
-      text: `Schauen Sie sich diesen wundervollen ${stone.stone_names} an!`,
+      title: `${stoneTitle} | NobleCutGems`,
+      text: `${stoneTitle} - 100% Untreated Natural Gemstone from NobleCutGems`,
       url: window.location.href
     };
     
@@ -643,12 +655,14 @@ export default function StoneClient({ lang, slug }) {
       if (navigator.share) {
         await navigator.share(shareData);
       } else {
-        // Fallback: Kopiere URL in Clipboard
         await navigator.clipboard.writeText(shareData.url);
-        alert('Link kopiert!');
+        setCopyFeedback(true);
+        setTimeout(() => setCopyFeedback(false), 2500);
       }
     } catch (error) {
-      console.error('Fehler beim Teilen:', error);
+      if (error.name !== 'AbortError') {
+        console.error('Fehler beim Teilen:', error);
+      }
     }
   };
 
@@ -893,8 +907,61 @@ export default function StoneClient({ lang, slug }) {
                   </div>
                 </div>
 
-                <div className="serif-heading text-4xl font-bold text-gray-900 mb-6">
-                  {formatPrice(stone.price_eur)}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="serif-heading text-4xl font-bold text-gray-900">
+                    {formatPrice(stone.price_eur)}
+                  </div>
+                  {copyFeedback && (
+                    <span className="text-xs bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-medium">
+                      ✓ {t.link_copied}
+                    </span>
+                  )}
+                </div>
+
+                {/* Refined Luxury Action & Assurance Block */}
+                <div className="border border-stone-200/90 bg-stone-50/60 rounded-xl p-5 mb-8 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      onClick={() => setShowInquiryDialog(true)}
+                      className="flex-1 bg-stone-900 hover:bg-stone-800 text-white text-xs sm:text-sm font-semibold tracking-wider uppercase py-3.5 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow"
+                    >
+                      <Sparkles className="w-4 h-4 text-amber-400" />
+                      {t.inquire_now || "Unverbindlich anfragen"}
+                    </Button>
+                    <a
+                      href={`https://wa.me/4915168482909?text=${encodeURIComponent(
+                        language === 'en'
+                          ? `Hello NobleCutGems, I have a question about ${getTranslatedStoneName(stone.id)} (${stone.carat_weight}ct, ${stone.price_eur}€): ${typeof window !== 'undefined' ? window.location.href : ''}`
+                          : language === 'fr'
+                          ? `Bonjour NobleCutGems, j'ai une question concernant ${getTranslatedStoneName(stone.id)} (${stone.carat_weight}ct, ${stone.price_eur}€) : ${typeof window !== 'undefined' ? window.location.href : ''}`
+                          : `Hallo NobleCutGems, ich habe eine Frage zu ${getTranslatedStoneName(stone.id)} (${stone.carat_weight}ct, ${stone.price_eur}€): ${typeof window !== 'undefined' ? window.location.href : ''}`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 bg-white hover:bg-stone-100 text-stone-800 border border-stone-300/90 text-xs sm:text-sm font-medium tracking-normal py-3.5 px-5 rounded-lg transition-all duration-200 hover:border-stone-400 shadow-sm"
+                    >
+                      <svg className="w-4 h-4 text-emerald-600 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                      </svg>
+                      {t.whatsapp_inquiry || "WhatsApp Beratung"}
+                    </a>
+                  </div>
+
+                  {/* Understated Luxury Trust Assurances */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 mt-4 border-t border-stone-200/70 text-xs text-stone-600">
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                      <span>{t.guarantee_authentic}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Award className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                      <span>{t.guarantee_inspection}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                      <span>{t.guarantee_shipping}</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div dangerouslySetInnerHTML={{ __html: stone[`description_${language}`] || stone.description_de }} className="text-gray-700 leading-relaxed mb-8" />
@@ -1016,9 +1083,13 @@ export default function StoneClient({ lang, slug }) {
                           <Textarea
                             id="message"
                             name="message"
-                            value={inquiryForm.message}
-                            onChange={(e) => setInquiryForm({...inquiryForm, message: e.target.value})}
-                            placeholder={`Ich interessiere mich f•r ${stone.name}...`}
+                            placeholder={
+                              language === 'en'
+                                ? `I am interested in ${getTranslatedStoneName(stone.id)}...`
+                                : language === 'fr'
+                                ? `Je suis intéressé(e) par ${getTranslatedStoneName(stone.id)}...`
+                                : `Ich interessiere mich für ${getTranslatedStoneName(stone.id)}...`
+                            }
                             required
                           />
                         </div>
