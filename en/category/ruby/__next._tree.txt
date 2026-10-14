@@ -1,6 +1,6 @@
-:HL["/_next/static/chunks/1uq3au_2m4vft.css","style"]
+:HL["/_next/static/chunks/2gikq84i4h0wc.css","style"]
 4:[["children",{"s":"__PAGE__","h":160}]]
 3:[["children",{"s":{"n":"type","t":"d","k":"ruby","s":[]},"h":96,"c":"$Q4"}]]
 2:[["children",{"s":"category","h":96,"c":"$Q3"}]]
 1:[["children",{"s":{"n":"lang","t":"d","k":"en","s":[]},"h":112,"c":"$Q2"}]]
-0:{"b":"6rfmQHUtz5G0ilRvnfZhA","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"Jh7hbRBdJ2SXC2wdssInP","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
