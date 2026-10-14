@@ -1,7 +1,12 @@
 node_modules/
 .next/
 out/
-output_reels/*.mp4
-output_reels/qa_frames/
+SAAS_TRUTHMODE_AUDIT.md
+*.audit.md
+output_reels/
 scratch_frames/
 scratch_render_sample.py
+render_reels.py
+font_sans.ttf
+font_serif.ttf
+
