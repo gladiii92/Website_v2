@@ -25,7 +25,7 @@ const translations = {
     heritage_desc: "Unsere Meisterhandwerker-Schleifer vereinen jahrhundertealte Techniken mit moderner Präzision.",
     exclusivity_title: "Absolute Exklusivität",
     exclusivity_desc: "Limitierte Kollektion seltener Steine, die in den entlegensten Ecken der Welt entdeckt wurden.",
-    cta_consultation: "Persöhnliche Anfrage",
+    cta_consultation: "Persönliche Anfrage",
     stone_names: {
       1: "Gelber Saphir",
       2: "Blauer Spinell",
@@ -512,7 +512,7 @@ export default function HomeClient({ lang }) {
           <h2 className="serif-heading text-3xl md:text-4xl font-bold mb-6">
             {lang === 'de' ? 'Bereit für Ihre persönliche Beratung?' : lang === 'fr' ? 'Prêt pour votre consultation personnelle ?' : 'Ready for your personal consultation?'}
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-stone-300 mb-8">
             {lang === 'de' ? 'Lassen Sie sich von unseren zertifizierten Experten bei der Auswahl Ihres perfekten Edelsteins beraten.' : lang === 'fr' ? 'Laissez nos experts certifiés vous conseiller dans le choix de votre pierre précieuse parfaite.' : 'Let our certified experts advise you on choosing your perfect gemstone.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">

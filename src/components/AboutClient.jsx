@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import { Award, Users, Globe, Heart, Sparkles, Crown } from "lucide-react";
+import { Award, Users, Globe, Heart, Sparkles, Crown, ZoomIn, X } from "lucide-react";
 import { Card, CardContent } from "../components/ui/Card";
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -31,12 +31,13 @@ const translations = {
     trust_title: "Vertrauen & Integrität",
     trust_desc: "Transparente Herkunft und geprüfte Qualität für jedes einzelne Stück",
     heritage_title: "Unser Weg",
-    heritage_content: "NobleCutGems ist jung, aber mit einer klaren Mission gestartet: Die Standards im Edelsteinhandel neu zu definieren. Dank unserer IGS-Zertifizierung und einem internationalen Netzwerk an vertrauenswürdigen Partnern bringen wir Edelsteine in einer Qualität, wie sie zuvor nur schwer zugänglich war, direkt zu Sammlern und Juwelieren weltweit.",
+    heritage_content: "NobleCutGems ist jung, aber mit einer klaren Mission gestartet: Die Standards im Edelsteinhandel neu zu definieren. Dank unserer IGS-Zertifizierung und einem internationalen Netzwerk an vertrauenswürdigen Partnern bringen wir Edelsteine in einer Qualität, wie sie zuvor nur schwer zugänglich war, direkt zu Sammlern und Liebhabern weltweit.",
     values_title: "Unsere Werte",
     igs_cert_title: "IGS-Zertifikat anzeigen",
     igs_modal_title: "International Gem Society Zertifikate",
     igs_description: "NobleCutGems ist stolz darauf, offiziell von der International Gem Society (IGS) zertifiziert zu sein. Diese Zertifizierung bestätigt unsere Expertise in der Bewertung, Authentifizierung und dem Handel mit Edelsteinen höchster Qualität.",
-    close: "Schließen"
+    close: "Schließen",
+    click_to_zoom: "Klicken zum Vergrößern"
   },
   en: {
     page_title: "About NobleCutGems",
@@ -62,12 +63,13 @@ const translations = {
     trust_title: "Trust & Integrity",
     trust_desc: "Transparent provenance and verified quality for every single piece",
     heritage_title: "Our Path",
-    heritage_content: "NobleCutGems is young, but started with a clear mission: to redefine the standards in the gemstone trade. Thanks to our IGS certification and an international network of trusted partners, we bring gemstones of a quality that was previously difficult to access directly to collectors and jewelers worldwide.",
+    heritage_content: "NobleCutGems is young, but started with a clear mission: to redefine the standards in the gemstone trade. Thanks to our IGS certification and an international network of trusted partners, we bring gemstones of a quality that was previously difficult to access directly to collectors and gemstone enthusiasts worldwide.",
     values_title: "Our Values",
     igs_cert_title: "View IGS Certificate",
     igs_modal_title: "International Gem Society Certificate",
     igs_description: "NobleCutGems is proud to be officially certified by the International Gem Society (IGS). This certification confirms our expertise in evaluating, authenticating, and trading gemstones of the highest quality.",
-    close: "Close"
+    close: "Close",
+    click_to_zoom: "Click to enlarge"
   },
   fr: {
     page_title: "À propos de NobleCutGems",
@@ -93,18 +95,41 @@ const translations = {
     trust_title: "Confiance & intégrité",
     trust_desc: "Origine transparente et qualité vérifiée pour chaque pièce",
     heritage_title: "Notre parcours",
-    heritage_content: "NobleCutGems est jeune, mais a commencé avec une mission claire : redéfinir les standards du commerce des pierres précieuses. Grâce à notre certification IGS et à un réseau international de partenaires de confiance, nous apportons directement aux collectionneurs et aux joailliers du monde entier des pierres d’une qualité jusqu’alors difficilement accessible.",
+    heritage_content: "NobleCutGems est jeune, mais a commencé avec une mission claire : redéfinir les standards du commerce des pierres précieuses. Grâce à notre certification IGS et à un réseau international de partenaires de confiance, nous apportons directement aux collectionneurs et passionnés du monde entier des pierres d’une qualité jusqu’alors difficilement accessible.",
     values_title: "Nos valeurs",
     igs_cert_title: "Voir le certificat IGS",
     igs_modal_title: "Certificat de l’International Gem Society",
     igs_description: "NobleCutGems est fier d’être officiellement certifié par l’International Gem Society (IGS). Cette certification confirme notre expertise dans l’évaluation, l’authentification et le commerce de pierres précieuses de la plus haute qualité.",
-    close: "Fermer"
+    close: "Fermer",
+    click_to_zoom: "Cliquer pour agrandir"
   }
 };
 
+const CERTIFICATES = [
+  { src: "/images/igs_spinel.png", nameDe: "IGS Spinell Zertifikat", nameEn: "IGS Spinel Certificate", nameFr: "Certificat IGS Spinelle" },
+  { src: "/images/igs_aquamarine.png", nameDe: "IGS Aquamarin Zertifikat", nameEn: "IGS Aquamarine Certificate", nameFr: "Certificat IGS Aigue-marine" },
+  { src: "/images/igs_emerald.png", nameDe: "IGS Smaragd Zertifikat", nameEn: "IGS Emerald Certificate", nameFr: "Certificat IGS Émeraude" },
+  { src: "/images/igs_garnet.png", nameDe: "IGS Granat Zertifikat", nameEn: "IGS Garnet Certificate", nameFr: "Certificat IGS Grenat" },
+  { src: "/images/igs_ruby.png", nameDe: "IGS Rubin Zertifikat", nameEn: "IGS Ruby Certificate", nameFr: "Certificat IGS Rubis" },
+  { src: "/images/igs_sapphire.png", nameDe: "IGS Saphir Zertifikat", nameEn: "IGS Sapphire Certificate", nameFr: "Certificat IGS Saphir" },
+  { src: "/images/igs_topaz.png", nameDe: "IGS Topas Zertifikat", nameEn: "IGS Topaz Certificate", nameFr: "Certificat IGS Topaze" },
+  { src: "/images/igs_tourmaline.png", nameDe: "IGS Turmalin Zertifikat", nameEn: "IGS Tourmaline Certificate", nameFr: "Certificat IGS Tourmaline" },
+  { src: "/images/igs_zircon.png", nameDe: "IGS Zirkon Zertifikat", nameEn: "IGS Zircon Certificate", nameFr: "Certificat IGS Zircon" },
+  { src: "/images/igs_citrine.png", nameDe: "IGS Citrin Zertifikat", nameEn: "IGS Citrine Certificate", nameFr: "Certificat IGS Citrine" },
+];
+
 export default function AboutPage({ lang }) {
   const [language, setLanguage] = useState(lang || "de");
+  const [selectedCert, setSelectedCert] = useState(null);
   const t = translations[language];
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedCert(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const handleLanguageChange = (event) => {
@@ -261,142 +286,61 @@ export default function AboutPage({ lang }) {
               </Card>
             </div>
 
-            {/* Statischer Carousel für Zertifikate - direkt unter den Karten, mittig ausgerichtet */}
-            <div className="mt-12">
-              <h3 className="serif-heading text-2xl font-bold text-gray-900 mb-6 text-center">
+            {/* Carousel für IGS-Zertifikate */}
+            <div className="mt-14">
+              <h3 className="serif-heading text-2xl font-bold text-gray-900 mb-2 text-center">
                 {t.igs_modal_title}
               </h3>
-              <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                <Carousel showThumbs={false} infiniteLoop={true} autoPlay={true} interval={3000}>
-                  {/* Slide 1: IGS Spinel Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_spinel.png" 
-                      alt="IGS Spinel Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Spinel Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 2: IGS Aquamarine Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_aquamarine.png" 
-                      alt="IGS Aquamarin Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Aquamarin Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 3: IGS Emerald Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_emerald.png" 
-                      alt="IGS Emerald Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Smaragd Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 4: IGS Garnet Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_garnet.png" 
-                      alt="IGS Granat Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Granat Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 5: IGS Ruby Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_ruby.png" 
-                      alt="IGS Rubin Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Rubin Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 6: IGS Saphir Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_sapphire.png" 
-                      alt="IGS Saphir Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Saphir Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 7: IGS Topaz Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_topaz.png" 
-                      alt="IGS Saphir Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Topaz Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 8: IGS Tourmalin Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_tourmaline.png" 
-                      alt="IGS Saphir Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Tourmalin Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 9: IGS Zircon Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_zircon.png" 
-                      alt="IGS Zircon Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Zircon Zertifikat
-                    </h4>
-                  </div>
-
-                  {/* Slide 10: IGS Citrin Zertifikat */}
-                  <div className="text-center p-4">
-                    <img 
-                      src="/images/igs_citrine.png" 
-                      alt="IGS Zircon Zertifikat" 
-                      className="mx-auto mb-6 max-w-full h-auto rounded-lg shadow-md"
-                      style={{ maxWidth: '15%', maxHeight: '15%' }}
-                    />
-                    <h4 className="text-xl font-semibold mb-4" style={{color: 'var(--primary-color)'}}>
-                      IGS Citrin Zertifikat
-                    </h4>
-                  </div>
+              <p className="text-sm text-stone-500 mb-8 text-center max-w-xl mx-auto">
+                {language === 'de' 
+                  ? 'Offizielle Prüf- und Qualitätszertifikate der International Gem Society für NobleCutGems.'
+                  : language === 'fr'
+                  ? 'Certificats officiels d’inspection et de qualité de l’International Gem Society pour NobleCutGems.'
+                  : 'Official inspection and quality certificates from the International Gem Society for NobleCutGems.'}
+              </p>
+              <div className="max-w-4xl mx-auto px-4 sm:px-6">
+                <Carousel 
+                  showThumbs={false} 
+                  infiniteLoop={true} 
+                  autoPlay={true} 
+                  interval={4000}
+                  showStatus={false}
+                  className="igs-carousel shadow-sm rounded-2xl bg-stone-50/60 p-4 border border-stone-200"
+                >
+                  {CERTIFICATES.map((cert, index) => {
+                    const certTitle = language === 'de' ? cert.nameDe : language === 'fr' ? cert.nameFr : cert.nameEn;
+                    return (
+                      <div key={index} className="text-center pb-6 pt-2 px-2">
+                        <div 
+                          onClick={() => setSelectedCert({ ...cert, title: certTitle })}
+                          className="group relative inline-block cursor-zoom-in bg-white p-3 rounded-xl border border-stone-200 shadow-md hover:shadow-xl transition-all duration-300 max-w-md mx-auto"
+                        >
+                          <img 
+                            src={cert.src} 
+                            alt={certTitle} 
+                            className="mx-auto rounded-lg max-h-[380px] w-auto object-contain"
+                          />
+                          <div className="absolute inset-0 bg-stone-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl flex items-center justify-center">
+                            <span className="inline-flex items-center gap-2 px-4 py-2 bg-stone-900/90 text-white text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm border border-stone-700">
+                              <ZoomIn className="w-4 h-4 text-emerald-400" />
+                              {t.click_to_zoom}
+                            </span>
+                          </div>
+                        </div>
+                        <h4 className="text-lg font-semibold mt-4 text-stone-900">
+                          {certTitle}
+                        </h4>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedCert({ ...cert, title: certTitle })}
+                          className="inline-flex items-center gap-1.5 text-xs text-stone-500 hover:text-emerald-700 transition-colors font-medium cursor-pointer mt-1"
+                        >
+                          <ZoomIn className="w-3.5 h-3.5" />
+                          {t.click_to_zoom}
+                        </button>
+                      </div>
+                    );
+                  })}
                 </Carousel>
               </div>
             </div>
@@ -478,6 +422,43 @@ export default function AboutPage({ lang }) {
             </div>
           </div>
         </section>
+
+        {/* Lightbox Modal for High-Res Inspection */}
+        {selectedCert && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/85 backdrop-blur-md p-4 animate-in fade-in duration-200"
+            onClick={() => setSelectedCert(null)}
+          >
+            <div 
+              className="relative max-w-4xl w-full max-h-[92vh] flex flex-col items-center bg-white rounded-2xl shadow-2xl p-4 md:p-6 border border-stone-200 overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-full flex items-center justify-between pb-3 border-b border-stone-200 mb-4">
+                <h3 className="serif-heading text-lg md:text-xl font-bold text-stone-900">
+                  {selectedCert.title}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCert(null)}
+                  className="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label={t.close}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="w-full flex-1 overflow-auto flex items-center justify-center p-2">
+                <img 
+                  src={selectedCert.src} 
+                  alt={selectedCert.title} 
+                  className="max-h-[72vh] w-auto object-contain rounded-lg shadow-inner"
+                />
+              </div>
+              <p className="text-xs text-stone-500 mt-3 text-center">
+                International Gem Society (IGS) • Verified Professional Certification
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
