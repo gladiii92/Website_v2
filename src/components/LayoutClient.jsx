@@ -364,6 +364,13 @@ export default function LayoutClient({ children, lang }) {
                   <Link href={createPageUrl("AGB", language)} className="block text-gray-600 hover:text-white transition-colors duration-300">
                     AGB
                   </Link>
+                  <button
+                    type="button"
+                    onClick={() => window.dispatchEvent(new Event("open-cookie-settings"))}
+                    className="block text-gray-600 hover:text-white transition-colors duration-300 text-left mx-auto md:mx-0"
+                  >
+                    {language === 'en' ? 'Cookie Settings' : language === 'fr' ? 'Gestion des cookies' : 'Cookie-Einstellungen'}
+                  </button>
                 </div>
               </div>
 

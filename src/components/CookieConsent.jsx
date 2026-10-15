@@ -42,6 +42,10 @@ export default function CookieConsent({ language = "de" }) {
     } catch {
       setShow(false);
     }
+
+    const handleOpenSettings = () => setShow(true);
+    window.addEventListener("open-cookie-settings", handleOpenSettings);
+    return () => window.removeEventListener("open-cookie-settings", handleOpenSettings);
   }, [language]);
 
   const accept = () => {
@@ -81,26 +85,35 @@ export default function CookieConsent({ language = "de" }) {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md bg-stone-900/95 backdrop-blur-md text-stone-200 border border-stone-800 p-5 rounded-2xl shadow-2xl z-50 text-xs sm:text-sm animate-in fade-in slide-in-from-bottom-4 duration-300">
-      <div className="flex items-start gap-3">
-        <div className="w-2 h-2 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
-        <div className="space-y-3">
-          <p className="text-stone-300 leading-relaxed">
-            {t.text}{" "}
-            <Link href={`/${language}/privacy`} className="underline hover:text-white transition-colors">
-              {t.privacy}
-            </Link>
-          </p>
-          <div className="flex items-center gap-2 pt-1">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-auto sm:max-w-md bg-[#141416]/95 backdrop-blur-md text-stone-200 border border-[#c5a059]/35 p-5 rounded-2xl shadow-2xl shadow-black/60 text-xs sm:text-sm animate-in fade-in slide-in-from-bottom-4 duration-300">
+      <div className="flex items-start gap-3.5">
+        <div className="w-8 h-8 rounded-lg bg-[#c5a059]/15 border border-[#c5a059]/30 flex items-center justify-center text-[#d4af37] shrink-0 mt-0.5">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div className="space-y-3 flex-1">
+          <div>
+            <h4 className="serif-heading text-sm font-semibold text-white tracking-wide">
+              {language === "en" ? "Privacy & Cookies" : language === "fr" ? "Confidentialité & Cookies" : "Privatsphäre & Cookies"}
+            </h4>
+            <p className="text-stone-300 text-xs leading-relaxed mt-1">
+              {t.text}{" "}
+              <Link href={`/${language}/privacy`} className="text-[#d4af37] hover:text-amber-300 underline underline-offset-2 transition-colors">
+                {t.privacy}
+              </Link>
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
             <button
               onClick={accept}
-              className="bg-white hover:bg-stone-100 text-stone-900 font-semibold px-4 py-2 rounded-lg text-xs tracking-wider uppercase transition-all shadow-sm"
+              className="bg-gradient-to-r from-[#d4af37] to-[#b8972e] hover:from-[#e0bc47] hover:to-[#c5a059] text-stone-950 font-semibold px-4 py-2 rounded-lg text-xs tracking-wider uppercase transition-all shadow-md active:scale-95"
             >
               {t.accept}
             </button>
             <button
               onClick={decline}
-              className="bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white font-medium px-4 py-2 rounded-lg text-xs transition-all border border-stone-700"
+              className="bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white font-medium px-4 py-2 rounded-lg text-xs transition-all border border-stone-700/80 active:scale-95"
             >
               {t.decline}
             </button>

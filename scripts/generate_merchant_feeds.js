@@ -166,3 +166,4 @@ fs.writeFileSync(path.join(__dirname, '../src/data/google_merchant_feed_de.txt')
 fs.writeFileSync(path.join(__dirname, '../src/data/google_merchant_feed_final.txt'), deFeed, 'utf8');
 
 console.log('Successfully generated EN, FR, and DE Google Merchant feeds with 34 items each.');
+
