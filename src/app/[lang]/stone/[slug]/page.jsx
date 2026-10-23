@@ -82,13 +82,120 @@ export default async function StonePage({ params }) {
     image: stone.main_image_url ? `https://www.noblecutgems.com${stone.main_image_url}` : undefined,
     description: stripHtml(stone[`description_${lang}`] || stone.description_de || ''),
     sku: `NCG-${stone.id}`,
+    mpn: `NCG-${stone.id}`,
+    brand: {
+      '@type': 'Brand',
+      name: 'NobleCutGems',
+    },
     offers: {
       '@type': 'Offer',
       url: `https://www.noblecutgems.com/${lang}/stone/${slug}`,
       priceCurrency: 'EUR',
       price: stone.price_eur,
+      priceValidUntil: '2027-12-31',
       availability: stone.is_sold ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: 'NobleCutGems',
+      },
+      shippingDetails: [
+        {
+          '@type': 'OfferShippingDetails',
+          shippingRate: {
+            '@type': 'MonetaryAmount',
+            value: '10.00',
+            currency: 'EUR',
+          },
+          shippingDestination: [
+            { '@type': 'DefinedRegion', addressCountry: 'DE' },
+          ],
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            handlingTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 1,
+              maxValue: 2,
+              unitCode: 'DAY',
+            },
+            transitTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 2,
+              maxValue: 4,
+              unitCode: 'DAY',
+            },
+          },
+        },
+        {
+          '@type': 'OfferShippingDetails',
+          shippingRate: {
+            '@type': 'MonetaryAmount',
+            value: '20.00',
+            currency: 'EUR',
+          },
+          shippingDestination: [
+            { '@type': 'DefinedRegion', addressCountry: 'AT' },
+            { '@type': 'DefinedRegion', addressCountry: 'CH' },
+            { '@type': 'DefinedRegion', addressCountry: 'FR' },
+            { '@type': 'DefinedRegion', addressCountry: 'IT' },
+            { '@type': 'DefinedRegion', addressCountry: 'NL' },
+            { '@type': 'DefinedRegion', addressCountry: 'BE' },
+            { '@type': 'DefinedRegion', addressCountry: 'ES' },
+          ],
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            handlingTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 1,
+              maxValue: 2,
+              unitCode: 'DAY',
+            },
+            transitTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 3,
+              maxValue: 7,
+              unitCode: 'DAY',
+            },
+          },
+        },
+        {
+          '@type': 'OfferShippingDetails',
+          shippingRate: {
+            '@type': 'MonetaryAmount',
+            value: '50.00',
+            currency: 'EUR',
+          },
+          shippingDestination: [
+            { '@type': 'DefinedRegion', addressCountry: 'US' },
+            { '@type': 'DefinedRegion', addressCountry: 'CA' },
+            { '@type': 'DefinedRegion', addressCountry: 'GB' },
+            { '@type': 'DefinedRegion', addressCountry: 'AU' },
+          ],
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            handlingTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 1,
+              maxValue: 3,
+              unitCode: 'DAY',
+            },
+            transitTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 7,
+              maxValue: 21,
+              unitCode: 'DAY',
+            },
+          },
+        },
+      ],
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: ['DE', 'AT', 'CH', 'FR', 'US', 'GB'],
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 14,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/ReturnShippingFees',
+      },
     },
   };
 

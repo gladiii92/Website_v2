@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    agentUpgrade: 'security',
+  },
   ...(isDev
     ? {
         async redirects() {
@@ -22,4 +25,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-

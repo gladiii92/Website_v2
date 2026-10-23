@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
+Allow: /images/
+Allow: /videos/
+Disallow: /private/
+
 Sitemap: https://www.noblecutgems.com/sitemap.xml

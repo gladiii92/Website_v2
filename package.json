@@ -2,12 +2,14 @@
   "name": "noblecutgems-platform",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://noblecutgems.com",
+  "homepage": "https://www.noblecutgems.com",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/generate_legacy_redirects.js && next build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d out -t true"
+    "deploy": "gh-pages -d out -t true",
+    "generate:redirects": "node scripts/generate_legacy_redirects.js",
+    "generate:feeds": "node scripts/generate_merchant_feeds.js"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",
@@ -15,7 +17,7 @@
     "framer-motion": "^14.0.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.539.0",
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "next-themes": "^0.4.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

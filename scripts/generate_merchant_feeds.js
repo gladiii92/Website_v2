@@ -3,7 +3,7 @@ const path = require('path');
 
 const gemstones = require('../src/data/gemstones.json');
 
-const DOMAIN = 'https://noblecutgems.com';
+const DOMAIN = 'https://www.noblecutgems.com';
 
 const STONE_NAMES = {
   1: { en: "Yellow Sapphire", fr: "Saphir Jaune", de: "Gelber Saphir" },
@@ -164,6 +164,12 @@ fs.writeFileSync(path.join(__dirname, '../src/data/google_merchant_feed_en.txt')
 fs.writeFileSync(path.join(__dirname, '../src/data/google_merchant_feed_fr.txt'), frFeed, 'utf8');
 fs.writeFileSync(path.join(__dirname, '../src/data/google_merchant_feed_de.txt'), deFeed, 'utf8');
 fs.writeFileSync(path.join(__dirname, '../src/data/google_merchant_feed_final.txt'), deFeed, 'utf8');
+
+// Also write to public so feeds can be accessed via URL
+fs.writeFileSync(path.join(__dirname, '../public/google_merchant_feed_en.txt'), enFeed, 'utf8');
+fs.writeFileSync(path.join(__dirname, '../public/google_merchant_feed_fr.txt'), frFeed, 'utf8');
+fs.writeFileSync(path.join(__dirname, '../public/google_merchant_feed_de.txt'), deFeed, 'utf8');
+fs.writeFileSync(path.join(__dirname, '../public/google_merchant_feed_final.txt'), deFeed, 'utf8');
 
 console.log('Successfully generated EN, FR, and DE Google Merchant feeds with 34 items each.');
 
