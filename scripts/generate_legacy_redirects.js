@@ -14,7 +14,6 @@ function createRedirectHtml(destPath) {
   <title>NobleCutGems - Weiterleitung</title>
   <meta http-equiv="refresh" content="0; url=${destPath}">
   <link rel="canonical" href="${fullDest}">
-  <meta name="robots" content="noindex, follow">
 </head>
 <body>
   <p>Weiterleitung zu <a href="${destPath}">${fullDest}</a>...</p>
@@ -69,7 +68,24 @@ staticRedirects.forEach(({ from, to }) => {
   count++;
 });
 
-// 2. Stone redirects (/stone/[slug] and /edelsteine/[slug])
+// 2. Category redirects
+const categoryTypes = [
+  'sapphire',
+  'spinel',
+  'garnet',
+  'tourmaline',
+  'emerald',
+  'peridot',
+  'topaz',
+  'ruby',
+];
+
+categoryTypes.forEach((cat) => {
+  writeRedirect(`category/${cat}`, `/de/category/${cat}`);
+  count++;
+});
+
+// 3. Stone redirects (/stone/[slug] and /edelsteine/[slug])
 gemstones.forEach((stone) => {
   if (stone.slug) {
     const dest = `/de/stone/${stone.slug}`;
@@ -80,4 +96,3 @@ gemstones.forEach((stone) => {
 });
 
 console.log(`Successfully generated legacy redirect files for ${count} route targets in public/`);
-

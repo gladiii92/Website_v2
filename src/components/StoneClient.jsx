@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useParams, useRouter, usePathname } from "next/navigation";
 import { createPageUrl } from "../utils";
+import { getLocalizedStoneName } from "../utils/stoneLocalization";
 import Image from "next/image";
 import { gemstones } from "../data/Gemstones";
 import { useWishlist } from "../context/WishlistContext";
@@ -706,7 +707,7 @@ export default function StoneClient({ lang, slug }) {
   };
 
   const getTranslatedStoneName = (id) => {
-    return t.stone_names?.[id] || stone.name;
+    return getLocalizedStoneName(stone, lang);
   };
 
   const getTranslatedTreatment = (treatment) => {

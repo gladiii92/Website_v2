@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import StoneClient from '@/components/StoneClient';
 import { gemstones } from '../../../../data/Gemstones';
+import { getLocalizedStoneName } from '@/utils/stoneLocalization';
 
 function stripHtml(htmlString) {
   if (!htmlString) return '';
@@ -33,7 +34,8 @@ export async function generateMetadata({ params }) {
   const stone = gemstones.find((s) => s.slug === slug);
   if (!stone) return {};
 
-  const title = `${stone.name} (${stone.carat_weight}ct) | NobleCutGems`;
+  const localizedName = getLocalizedStoneName(stone, lang);
+  const title = `${localizedName} (${stone.carat_weight}ct) | NobleCutGems`;
   const rawDescription = stone[`description_${lang}`] || stone.description_de || 'Entdecken Sie exklusive Edelsteine bei NobleCutGems.';
   const description = stripHtml(rawDescription).substring(0, 160);
   const url = `https://www.noblecutgems.com/${lang}/stone/${slug}`;
@@ -75,10 +77,12 @@ export default async function StonePage({ params }) {
     notFound();
   }
 
+  const localizedName = getLocalizedStoneName(stone, lang);
+
   const jsonLd = {
     '@context': 'https://schema.org/',
     '@type': 'Product',
-    name: stone.name,
+    name: localizedName,
     image: stone.main_image_url ? `https://www.noblecutgems.com${stone.main_image_url}` : undefined,
     description: stripHtml(stone[`description_${lang}`] || stone.description_de || ''),
     sku: `NCG-${stone.id}`,
